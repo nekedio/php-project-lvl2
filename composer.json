@@ -6,7 +6,7 @@
         ],
     "autoload": {
         "files": [
-            "src/doc.php"
+            "src/docopt.php"
         ]
     },
     "authors": [
