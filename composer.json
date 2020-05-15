@@ -1,0 +1,21 @@
+{
+    "name": "nekedio/php-project-lvl2",
+    "description": "find different",
+    "bin": [
+        "./bin/gendiff"
+        ],
+    "autoload": {
+        "files": [
+            "src/doc.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Nikita Ionov",
+            "email": "ionov.goo@gmail.com"
+        }
+    ],
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}

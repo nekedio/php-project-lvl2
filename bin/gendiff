@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+
+<?php
+
+$autoloadGlob = __DIR__ . '/../../../autoload.php';
+$autoloadLoc = __DIR__ . '/../vendor/autoload.php';
+
+if (file_exists($autoloadGlob)) {
+    require_once $autoloadGlob;
+} else {
+    require_once $autoloadLoc;
+}
+
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+
+Options:
+  -h --help     Show this screen.
+  -v --version     Show version.
+DOC;
+
+FindDifferent\docopt\runDocopt($doc);
