@@ -1,0 +1,22 @@
+name: linter
+
+on: [push]
+
+
+jobs:
+  test_linter:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+# Пакет для доступа гитэкшна в мой репозиторий
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v1
+# Пакет с PHP для тестов
+      with:
+        php_version: '7.2'
+    - name: Install package
+      run: make install
+    - name: Start linter
+      run: make lint
