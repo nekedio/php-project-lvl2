@@ -1,3 +1,7 @@
+lint:
+	clear
+	composer run-script phpcs -- --standard=PSR12 src bin
+
 gendiffh:
 	clear
 	php bin/gendiff -h
