@@ -3,7 +3,7 @@
 
 # php-project-lvl2
 
-*** Install
+### Install
 1. clone repository
 2. > make install
 
@@ -12,10 +12,10 @@
 1. Install globally composer
 2. > composer global require nekedio/php-project-lvl2
 
-*** Help
+### Help
 > gendiff --help
 
-*** Compare two JSON
+### Compare two JSON
 > gendiff <firstFile> <secondFile>
 
 [![asciicast](https://asciinema.org/a/331486.svg)](https://asciinema.org/a/331486)
