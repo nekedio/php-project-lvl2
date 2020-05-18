@@ -16,7 +16,7 @@
 > gendiff --help
 
 ### Compare two JSON
-> gendiff <firstFile> <secondFile>
+> gendiff firstFile secondFile
 
 [![asciicast](https://asciinema.org/a/331486.svg)](https://asciinema.org/a/331486)
 
