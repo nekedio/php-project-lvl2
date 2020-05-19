@@ -13,7 +13,10 @@ function runDocopt($doc)
     $format = Collection\get($args, '--format');
     $firstFile = Collection\get($args, '<firstFile>');
     $secondFile = Collection\get($args, '<secondFile>');
-    $diff = getDiffJson($firstFile, $secondFile);
+    $firstJson = json_decode(file_get_contents($firstFile), true);
+    $secondJson = json_decode(file_get_contents($secondFile), true);
+
+    $diff = getDiffJson($firstJson, $secondJson);
     echo $diff;
     return;
 }

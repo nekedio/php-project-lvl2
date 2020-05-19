@@ -5,11 +5,12 @@ namespace FindDifferent\comparison;
 use function Funct\Collection\union;
 use function Funct\Collection\merge;
 
-function getDiffJson($firstFile, $secondFile)
+function getDiffJson($firstJson, $secondJson)
 {
-    $firstJson = json_decode(file_get_contents($firstFile), true);
-    $secondJson = json_decode(file_get_contents($secondFile), true);
+    // $firstJson = json_decode(file_get_contents($firstFile), true);
+    // $secondJson = json_decode(file_get_contents($secondFile), true);
     $merge = array_merge($firstJson, $secondJson);
+
     $result = array_reduce(array_keys($merge), function ($acc, $key) use ($merge, $firstJson, $secondJson) {
         $valueMerge = $merge[$key];
         $valueFirstJson = $firstJson[$key] ?? null;
