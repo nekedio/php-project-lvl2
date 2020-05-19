@@ -14,5 +14,8 @@
             <!-- the files included in the clover report -->
             <directory suffix=".php">./src</directory>
         </whitelist>
-    </filter>
+   </filter>
+   <!-- <logging> -->
+   <!--     <log type="coverage-clover" target="./build/logs/clover.xml"/> -->
+   <!-- </logging> -->
 </phpunit>
