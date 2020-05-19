@@ -15,7 +15,7 @@ jobs:
       uses: shivammathur/setup-php@v1
 # Пакет с PHP для тестов
       with:
-        php_version: '7.2'
+        php_version: '7.4'
     - name: Install package
       run: make install
     - name: Start linter
