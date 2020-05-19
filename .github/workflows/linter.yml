@@ -25,8 +25,8 @@ jobs:
 # Кодклимат
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v2.6.0 
-    env:
-      CC_TEST_REPORTER_ID: TEST_COVERAGE
-    with:
-      coverageCommand: make test
-      debug: true
+      env:
+        CC_TEST_REPORTER_ID: TEST_COVERAGE
+      with:
+        coverageCommand: make test
+        debug: true
