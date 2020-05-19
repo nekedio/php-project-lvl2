@@ -20,3 +20,5 @@ jobs:
       run: make install
     - name: Start linter
       run: make lint
+    - name: Start phpunit test
+      run: make test
