@@ -1,6 +1,6 @@
 ![linter](https://github.com/nekedio/php-project-lvl2/workflows/linter/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4f26361d1f2d60432298/maintainability)](https://codeclimate.com/github/nekedio/php-project-lvl2/maintainability)
-<a href="https://codeclimate.com/github/nekedio/php-project-lvl2/test_coverage"><img src="https://api.codeclimate.com/v1/badges/4f26361d1f2d60432298/test_coverage" /></a>
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4f26361d1f2d60432298/test_coverage)](https://codeclimate.com/github/nekedio/php-project-lvl2/test_coverage)
 
 # php-project-lvl2
 
