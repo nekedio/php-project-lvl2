@@ -11,18 +11,4 @@ if (file_exists($autoloadGlob)) {
     require_once $autoloadLoc;
 }
 
-$doc = <<<DOC
-Generate diff
-
-Usage:
-  gendiff (-h|--help)
-  gendiff (-v|--version)
-  gendiff [--format <fmt>] <firstFile> <secondFile>
-
-Options:
-  -h --help                     Show this screen.
-  -v --version                  Show version.
-  --format <fmt>                Report format [default: pretty]
-DOC;
-
-FindDifferent\docopt\runDocopt($doc);
+FindDifferent\docopt\runDocopt();
