@@ -5,7 +5,8 @@ namespace FindDifferent\docopt;
 use Docopt;
 use Funct\Collection;
 
-use function FindDifferent\comparison\getDiffJson;
+use function FindDifferent\comparisonJson\getDiffJson;
+use function FindDifferent\comparisonYml\getDiffYml;
 
 function runDocopt()
 {
@@ -28,7 +29,13 @@ function runDocopt()
     $firstFile = Collection\get($args, '<firstFile>');
     $secondFile = Collection\get($args, '<secondFile>');
 
-    $diff = getDiffJson($firstFile, $secondFile);
+    if ($format === 'json' || $format === 'pretty') {
+        $diff = getDiffJson($firstFile, $secondFile);
+    } elseif ($format === 'yml') {
+        $diff = getDiffYml($firstFile, $secondFile);
+    }
+
     echo $diff;
+    // print_r($format);
     return;
 }

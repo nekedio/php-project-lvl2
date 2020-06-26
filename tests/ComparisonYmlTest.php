@@ -3,11 +3,11 @@
 namespace FindDifferent\test;
 
 use PHPUnit\Framework\TestCase;
-use function FindDifferent\comparison\getDiffJson;
+use function FindDifferent\comparisonYml\getDiffYml;
 
-class ComparisonTest extends TestCase
+class ComparisonYmlTest extends TestCase
 {
-    public function testGetDiffJson()
+    public function testGetDiffYml()
     {
         $result1 = "{\n" . 
             "  host: hexlet.io\n+ timeout: 20\n" .
@@ -21,7 +21,7 @@ class ComparisonTest extends TestCase
             "  host: hexlet.io\n" .
             "+ proxy: 123.234.53.22\n}\n";
 
-        $this->assertEquals($result1, getDiffJson('tests/fixtures/before.json', 'tests/fixtures/after.json'));
-        $this->assertEquals($result2, getDiffJson('tests/fixtures/after.json', 'tests/fixtures/before.json'));
+        $this->assertEquals($result1, getDiffYml('tests/fixtures/before.yml', 'tests/fixtures/after.yml'));
+        $this->assertEquals($result2, getDiffYml('tests/fixtures/after.yml', 'tests/fixtures/before.yml'));
     }
 }
