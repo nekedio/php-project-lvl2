@@ -2,14 +2,15 @@
     "name": "nekedio/php-project-lvl2",
     "description": "find different",
     "bin": [
-        "./bin/gendiff"
+        "./bin/gendiff",
+        "./bin/test"
         ],
     "autoload": {
         "files": [
             "src/docopt.php",
             "src/comparison.php",
-            "src/comparisonJson.php",
-            "src/comparisonYml.php"
+            "src/test.php",
+            "src/parsers.php"
         ]
     },
     "scripts": {

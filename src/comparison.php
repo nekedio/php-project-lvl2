@@ -2,8 +2,22 @@
 
 namespace FindDifferent\comparison;
 
-function getDiff($first, $second)
+use function FindDifferent\parsers\getDataFromJson;
+use function FindDifferent\parsers\getDataFromYaml;
+
+function getDiff($format, $first, $second)
 {
+    if ($format === 'json' || $format === 'pretty') {
+        $dataFirst = getDataFromJson($first);
+        $dataSecond = getDataFromJson($second);
+    } elseif ($format === 'yml') {
+        $dataFirst = getDataFromYaml($first);
+        $dataSecond = getDataFromYaml($second);
+    }
+
+    $first = get_object_vars($dataFirst);
+    $second = get_object_vars($dataSecond);
+
     $merge = array_merge($first, $second);
     $result = array_reduce(array_keys($merge), function ($acc, $key) use ($merge, $first, $second) {
         $valueMerge = $merge[$key];
@@ -25,4 +39,6 @@ function getDiff($first, $second)
     }, []);
     $result = implode("\n", $result);
     return "{\n{$result}\n}\n";
+
+    // print_r([$format, $dataFirst, $dataSecond]);
 }

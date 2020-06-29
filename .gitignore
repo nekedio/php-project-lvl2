@@ -4,3 +4,7 @@ logs
 *.swo
 *.swp
 *.cache
+test
+test.php
+json.json
+yaml.yml
