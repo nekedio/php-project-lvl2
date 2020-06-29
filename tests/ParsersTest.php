@@ -3,6 +3,7 @@
 namespace FindDifferent\test;
 
 use PHPUnit\Framework\TestCase;
+
 use function FindDifferent\parsers\getDataFromJson;
 use function FindDifferent\parsers\getDataFromYaml;
 
