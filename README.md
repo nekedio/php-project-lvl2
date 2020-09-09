@@ -17,11 +17,17 @@
 > gendiff --help
 
 ### Compare two JSON
-> gendiff --format json firstFile secondFile
+> gendiff --format json firstFile.json secondFile.json
 
 [![asciicast](https://asciinema.org/a/331486.svg)](https://asciinema.org/a/331486)
 
+[![asciicast](https://asciinema.org/a/SuOe9DUDOZWpk3k0YE704sMQx.svg)](https://asciinema.org/a/SuOe9DUDOZWpk3k0YE704sMQx)
+
 ### Compare two YML
-> gendiff --format yml firstFile secondFile
+> gendiff --format json firstFile.yml secondFile.yml
 
 [![asciicast](https://asciinema.org/a/343404.svg)](https://asciinema.org/a/343404)
+
+[![asciicast](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc.svg)](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc)
+
+
