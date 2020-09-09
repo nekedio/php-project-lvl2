@@ -4,12 +4,11 @@ namespace FindDifferent\test;
 
 use PHPUnit\Framework\TestCase;
 
-use function FindDifferent\parsers\getDataFromJson;
-use function FindDifferent\parsers\getDataFromYaml;
+use function FindDifferent\parser\getData;
 
 class ParsersTest extends TestCase
 {
-    public function testGetDataFromJson()
+    public function testGetData()
     {
         $data = [
             'timeout' => 20,
@@ -19,19 +18,7 @@ class ParsersTest extends TestCase
 
         $result = (object) $data;
 
-        $this->assertEquals($result, getDataFromJson('tests/fixtures/after.json'));
-    }
-
-    public function testGetDataFromYaml()
-    {
-        $data = [
-            'timeout' => 20,
-            'verbose' => 1,
-            'host' => 'hexlet.io',
-        ];
-
-        $result = (object) $data;
-
-        $this->assertEquals($result, getDataFromYaml('tests/fixtures/after.yml'));
+        $this->assertEquals($result, getData('tests/fixtures/after.json'));
+        $this->assertEquals($result, getData('tests/fixtures/after.yml'));
     }
 }
