@@ -30,4 +30,8 @@
 
 [![asciicast](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc.svg)](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc)
 
+### Plain output
+> gendiff --format plain firstFile.yml secondFile.yml
+[![asciicast](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s.svg)](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s)
+
 
