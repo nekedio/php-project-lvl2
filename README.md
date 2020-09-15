@@ -32,6 +32,7 @@
 
 ### Plain output
 > gendiff --format plain firstFile.yml secondFile.yml
+
 [![asciicast](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s.svg)](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s)
 
 
