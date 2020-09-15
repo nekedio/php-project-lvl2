@@ -12,7 +12,7 @@ class ParsersTest extends TestCase
     {
         $data = [
             'timeout' => 20,
-            'verbose' => 1,
+            'verbose' => 'true',
             'host' => 'hexlet.io',
         ];
 

@@ -8,14 +8,16 @@
         "files": [
             "src/docopt.php",
             "src/comparison.php",
-            "src/parsers.php"
+            "src/parsers.php",
+            "src/formatters/formatJson.php",
+            "src/formatters/formatPlain.php",
+            "src/formatters/formatYaml.php"
         ]
     },
     "scripts": {
             "phpcs": "phpcs",
             "phpunit": "phpunit",
             "test": "phpunit tests"
-        
         },
     "authors": [
         {

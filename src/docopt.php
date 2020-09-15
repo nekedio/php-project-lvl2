@@ -28,7 +28,7 @@ function runDocopt()
     $firstFile = Collection\get($args, '<firstFile>');
     $secondFile = Collection\get($args, '<secondFile>');
 
-    $diff = outputDiff($format, $firstFile, $secondFile);
+    $diff = outputDiff($firstFile, $secondFile, $format);
     
     //print_r($diff);
 
