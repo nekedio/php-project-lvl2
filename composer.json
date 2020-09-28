@@ -9,9 +9,9 @@
             "src/docopt.php",
             "src/comparison.php",
             "src/parsers.php",
-            "src/formatters/formatJson.php",
-            "src/formatters/formatPlain.php",
-            "src/formatters/formatYaml.php"
+            "src/formatters/jsonFormat.php",
+            "src/formatters/plainFormat.php",
+            "src/formatters/stylishFormat.php"
         ]
     },
     "scripts": {

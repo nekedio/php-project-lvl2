@@ -5,7 +5,7 @@ namespace FindDifferent\docopt;
 use Docopt;
 use Funct\Collection;
 
-use function FindDifferent\comparison\outputDiff;
+use function FindDifferent\comparison\getOutput;
 
 function runDocopt()
 {
@@ -20,7 +20,7 @@ function runDocopt()
     Options:
       -h --help                     Show this screen.
       -v --version                  Show version.
-      --format <fmt>                Report format [default: pretty]
+      --format <fmt>                Report format [default: stylish]
     DOC;
 
     $args = Docopt::handle($doc, array('version' => 'Find different 0.1'));
@@ -28,10 +28,10 @@ function runDocopt()
     $firstFile = Collection\get($args, '<firstFile>');
     $secondFile = Collection\get($args, '<secondFile>');
 
-    $diff = outputDiff($firstFile, $secondFile, $format);
+    $diff = getOutput($firstFile, $secondFile, $format);
     
     //print_r($diff);
 
-    echo $diff;
+    echo $diff . "\n";
     return;
 }

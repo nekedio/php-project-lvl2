@@ -1,0 +1,284 @@
+
+Array
+(
+    [common] => Array
+        (
+            [name] => common
+            [value] => 
+            [children] => Array
+                (
+                    [setting1] => Array
+                        (
+                            [name] => setting1
+                            [value] => Value 1
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting2] => Array
+                        (
+                            [name] => setting2
+                            [value] => 200
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting3] => Array
+                        (
+                            [name] => setting3
+                            [value] => 
+                            [children] => Array
+                                (
+                                    [key] => Array
+                                        (
+                                            [name] => key
+                                            [value] => value
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                    [setting6] => Array
+                        (
+                            [name] => setting6
+                            [value] => 
+                            [children] => Array
+                                (
+                                    [key] => Array
+                                        (
+                                            [name] => key
+                                            [value] => value
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                    [doge] => Array
+                                        (
+                                            [name] => doge
+                                            [value] => 
+                                            [children] => Array
+                                                (
+                                                    [wow] => Array
+                                                        (
+                                                            [name] => wow
+                                                            [value] => so much
+                                                            [children] => Array
+                                                                (
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                        )
+
+                                    [ops] => Array
+                                        (
+                                            [name] => ops
+                                            [value] => vops
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                    [follow] => Array
+                        (
+                            [name] => follow
+                            [value] => false
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting4] => Array
+                        (
+                            [name] => setting4
+                            [value] => blah blah
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting5] => Array
+                        (
+                            [name] => setting5
+                            [value] => 
+                            [children] => Array
+                                (
+                                    [key5] => Array
+                                        (
+                                            [name] => key5
+                                            [value] => value5
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [group1] => Array
+        (
+            [name] => group1
+            [value] => 
+            [children] => Array
+                (
+                    [baz] => Array
+                        (
+                            [name] => baz
+                            [value] => bars
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [foo] => Array
+                        (
+                            [name] => foo
+                            [value] => bar
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [nest] => Array
+                        (
+                            [name] => nest
+                            [value] => str
+                            [children] => Array
+                                (
+                                    [key] => Array
+                                        (
+                                            [name] => key
+                                            [value] => value
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [group2] => Array
+        (
+            [name] => group2
+            [value] => 
+            [children] => Array
+                (
+                    [abc] => Array
+                        (
+                            [name] => abc
+                            [value] => 12345
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [deep] => Array
+                        (
+                            [name] => deep
+                            [value] => 
+                            [children] => Array
+                                (
+                                    [id] => Array
+                                        (
+                                            [name] => id
+                                            [value] => 45
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [group3] => Array
+        (
+            [name] => group3
+            [value] => 
+            [children] => Array
+                (
+                    [fee] => Array
+                        (
+                            [name] => fee
+                            [value] => 100500
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [deep] => Array
+                        (
+                            [name] => deep
+                            [value] => 
+                            [children] => Array
+                                (
+                                    [id] => Array
+                                        (
+                                            [name] => id
+                                            [value] => 
+                                            [children] => Array
+                                                (
+                                                    [number] => Array
+                                                        (
+                                                            [name] => number
+                                                            [value] => 45
+                                                            [children] => Array
+                                                                (
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+)

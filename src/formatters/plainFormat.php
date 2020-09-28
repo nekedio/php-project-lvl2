@@ -1,12 +1,12 @@
 <?php
 
-namespace FindDifferent\formatters\formatPlain;
+namespace FindDifferent\formatters\plainFormat;
 
 use function Funct\Strings\times;
 
 function getDiffPlain($diff)
 {
-    $diffString = func($diff) . "\n";
+    $diffString = func($diff);
     return $diffString;
 }
 
@@ -19,7 +19,7 @@ function func($diff, $path = "")
             $diff[$key]['meta'],
             $diff[$key]['value'],
             $diff[$key]['children'],
-            $diff[$key - 1]['value'] ?? null
+            $diff[$key]['oldValue'] ?? null
         );
         if ($diff[$key]['children'] != []) {
             $acc[] = func($diff[$key]['children'], $path);

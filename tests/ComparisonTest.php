@@ -4,11 +4,11 @@ namespace FindDifferent\test;
 
 use PHPUnit\Framework\TestCase;
 
-use function FindDifferent\comparison\outputDiff;
+use function FindDifferent\comparison\getOutput;
 
 class ComparisonTest extends TestCase
 {
-    public function testGetDiff()
+    public function testGetOutput()
     {
         $result1 =
             "{\n" .
@@ -18,7 +18,7 @@ class ComparisonTest extends TestCase
             "  - timeout: 50\n" .
             "  + timeout: 20\n" .
             "  + verbose: true\n" .
-            "}\n";
+            "}";
 
         $result2 =
             "{\n" .
@@ -66,7 +66,7 @@ class ComparisonTest extends TestCase
             "        }\n" .
             "        fee: 100500\n" .
             "    }\n" .
-            "}\n";
+            "}";
 
         $result3 =
             "Property 'common.follow' was added with value: false\n" .
@@ -79,36 +79,43 @@ class ComparisonTest extends TestCase
             "Property 'group1.baz' was updated. From 'bas' to 'bars'\n" .
             "Property 'group1.nest' was updated. From [complex value] to 'str'\n" .
             "Property 'group2' was removed\n" .
-            "Property 'group3' was added with value: [complex value]\n";
+            "Property 'group3' was added with value: [complex value]";
 
-        $this->assertEquals($result1, outputDiff(
+        $result4 = '{"common":{"follow":"addedKey","setting1":"noChange",' .
+            '"setting2":"deletedKey","setting3":"addedChildren","setting4":' .
+            '"addedKey","setting5":"addedKey","setting6":{"doge":{"wow":"changedValue"}' .
+            ',"key":"noChange","ops":"addedKey"}},"group1":{"baz":"changedValue",' .
+            '"foo":"noChange","nest":"deletedChildren"},"group2":"deletedKey",' .
+            '"group3":"addedKey"}';
+
+
+        $this->assertEquals($result1, getOutput(
             'tests/fixtures/before.json',
             'tests/fixtures/after.json',
-            'json'
+            'stylish'
         ));
 
-        // $this->assertEquals($result1, outputDiff(
-        //     'tests/fixtures/before.yml',
-        //     'tests/fixtures/after.yml',
-        //     'yml'
-        // ));
-
-        $this->assertEquals($result2, outputDiff(
+        $this->assertEquals($result2, getOutput(
             'tests/fixtures/treeBefore.json',
             'tests/fixtures/treeAfter.json',
-            'json'
+            'stylish'
         ));
 
-        // $this->assertEquals($result2, outputDiff(
-        //     'tests/fixtures/treeBefore.yml',
-        //     'tests/fixtures/treeAfter.yml',
-        //     'yml'
-        // ));
+        $this->assertEquals($result2, getOutput(
+            'tests/fixtures/treeBefore.yml',
+            'tests/fixtures/treeAfter.yml',
+            'stylish'
+        ));
 
-        $this->assertEquals($result3, outputDiff(
+        $this->assertEquals($result3, getOutput(
             'tests/fixtures/treeBefore.yml',
             'tests/fixtures/treeAfter.yml',
             'plain'
+        ));
+        $this->assertEquals($result4, getOutput(
+            'tests/fixtures/treeBefore.yml',
+            'tests/fixtures/treeAfter.yml',
+            'json'
         ));
     }
 }

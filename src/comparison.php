@@ -3,29 +3,34 @@
 namespace FindDifferent\comparison;
 
 use function FindDifferent\parser\getData;
-use function FindDifferent\formatters\formatJson\getDiffJson;
-use function FindDifferent\formatters\formatYaml\getDiffYaml;
-use function FindDifferent\formatters\formatPlain\getDiffPlain;
+use function FindDifferent\formatters\jsonFormat\getDiffJson;
+use function FindDifferent\formatters\plainFormat\getDiffPlain;
+use function FindDifferent\formatters\stylishFormat\getDiffStylish;
 
-function outputDiff($first, $second, $format)
+function getOutput($first, $second, $format)
 {
     $treeBefore = getTree(getData($first));
     $treeAfter = getTree(getData($second));
 
     $diff = getDiff($treeBefore, $treeAfter);
-
-    // print_r($diff);
+    
+    sortTree($diff);
 
     if ($format === 'json') {
-        $outputDiff = getDiffJson($diff);
-    } elseif ($format === 'yml' || $format === 'yaml') {
-        $outputDiff = getDiffYaml($diff);
+        $output = getDiffJson($diff);
     } elseif ($format === 'plain') {
-        $outputDiff = getDiffPlain($diff);
+        $output = getDiffPlain($diff);
+    } elseif ($format === 'stylish' || $format === null) {
+        $output = getDiffStylish($diff);
+    } else {
+        $output = 'gendiff: unknown format "' . $format . '"';
     }
-
-    return $outputDiff;
+    
+    return $output;
 }
+
+
+
 
 function getTree($data)
 {
@@ -52,7 +57,6 @@ function getTree($data)
 function getDiff($treeBefore, $treeAfter)
 {
     $treeMerge = array_replace_recursive($treeBefore, $treeAfter);
-    sortTree($treeMerge);
     $diff = function ($merge, $before, $after) use (&$diff) {
         $result = array_reduce(array_keys($merge), function ($acc, $key) use ($merge, $before, $after, $diff) {
             if ($merge[$key]['children'] != []) {
@@ -67,6 +71,7 @@ function getDiff($treeBefore, $treeAfter)
             
             $name = $key;
             $meta = null;
+            $oldValue = null;
             if (($before != null) && ($after != null)) {
                 if (!array_key_exists($key, $before)) {
                     $meta = 'add';
@@ -75,20 +80,19 @@ function getDiff($treeBefore, $treeAfter)
                 } elseif ($before != null) {
                     if ($before[$key]['value'] !== $after[$key]['value']) {
                         if ($before[$key]['value'] != null && $after[$key]['value'] != null) {
-                            $acc[] = getNode($key, $before[$key]['value'], 'oldValue', $children);
                             $meta = 'newValue';
+                            $oldValue = $before[$key]['value'];
                         } elseif ($after[$key]['value'] === null) {
-                            $acc[] = getNode($key, $before[$key]['value'], 'oldValue', []);
                             $meta = 'newValue';
+                            $oldValue = $before[$key]['value'];
                         } else {
-                            $acc[] = getNode($key, null, 'oldValue', $children);
                             $meta = 'newValue';
-                            $children = [];
+                            $oldValue = $before[$key]['value'];
                         }
                     }
                 }
             }
-            $acc[] = getNode($key, $merge[$key]['value'], $meta, $children);
+            $acc[$key] = getNode($key, $merge[$key]['value'], $oldValue, $meta, $children);
             return $acc;
         }, []);
         return $result;
@@ -97,11 +101,12 @@ function getDiff($treeBefore, $treeAfter)
     return $diff($treeMerge, $treeBefore, $treeAfter);
 }
 
-function getNode($name, $value, $meta, $children)
+function getNode($name, $value, $oldValue, $meta, $children)
 {
     return [
         'name' => $name,
         'value' => $value,
+        'oldValue' => $oldValue,
         'meta' => $meta,
         'children' => $children
     ];

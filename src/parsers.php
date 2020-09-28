@@ -31,6 +31,7 @@ function getDataJson(string $fileJson)
 function getDataYml(string $fileYml)
 {
     $data = Yaml::parseFile($fileYml, Yaml::PARSE_OBJECT_FOR_MAP);
+    //print_r($fileYml);
     return $data;
 }
 
