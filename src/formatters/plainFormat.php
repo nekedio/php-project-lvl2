@@ -8,7 +8,7 @@ use function FindDifferent\formatters\additionalFunc\showBoolValue;
 function genPlainFormat($tree, $path = "")
 {
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $path) {
-        $path = $path . "." . $tree[$key]['name'];
+        $path = $path . "." . $key;
         $acc[] = event(
             $path,
             $tree[$key]['meta'],
