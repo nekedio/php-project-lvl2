@@ -3,42 +3,41 @@
 namespace FindDifferent\formatters\plainFormat;
 
 use function Funct\Strings\times;
+use function FindDifferent\formatters\additionalFunc\showBoolValue;
 
-function getDiffPlain($diff)
+function genPlainFormat($tree, $path = "")
 {
-    $diffString = func($diff);
-    return $diffString;
-}
-
-function func($diff, $path = "")
-{
-    $result = array_reduce(array_keys($diff), function ($acc, $key) use ($diff, $path) {
-        $path = $path . "." . $diff[$key]['name'];
+    $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $path) {
+        $path = $path . "." . $tree[$key]['name'];
         $acc[] = event(
             $path,
-            $diff[$key]['meta'],
-            $diff[$key]['value'],
-            $diff[$key]['children'],
-            $diff[$key]['oldValue'] ?? null
+            $tree[$key]['meta'],
+            $tree[$key]['value'],
+            $tree[$key]['children'],
+            $tree[$key]['oldValue'] ?? null
         );
-        if ($diff[$key]['children'] != []) {
-            $acc[] = func($diff[$key]['children'], $path);
+        if ($tree[$key]['children'] != []) {
+            $acc[] = genPlainFormat($tree[$key]['children'], $path);
         }
         return $acc;
     }, []);
-    return implode("\n", filter($result));
+    return implode("\n", delVoidLine($result));
 }
 
 function event($path, $meta, $value, $children, $oldValue)
 {
     if ($value === null) {
         $value = '[complex value]';
-    } elseif ($value !== 'false' && $value !== 'true') {
+    } elseif ($value === false || $value === true) {
+        $value = showBoolValue($value);
+    } else {
         $value = "'" . $value . "'";
     }
     if ($oldValue === null) {
         $oldValue = '[complex value]';
-    } elseif ($oldValue !== 'false' && $oldValue !== 'true') {
+    } elseif ($oldValue === false || $oldValue === true) {
+        $oldValue = showBoolValue($oldValue);
+    } else {
         $oldValue = "'" . $oldValue . "'";
     }
     $path = "'" . trim($path, ".") . "'";
@@ -59,7 +58,7 @@ function event($path, $meta, $value, $children, $oldValue)
     return $event;
 }
 
-function filter($events)
+function delVoidLine($events)
 {
     return array_filter($events, function ($event) {
         return ($event != null);

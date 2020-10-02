@@ -2,42 +2,45 @@
 
 namespace FindDifferent\comparison;
 
-use function FindDifferent\parser\getData;
-use function FindDifferent\formatters\jsonFormat\getDiffJson;
-use function FindDifferent\formatters\plainFormat\getDiffPlain;
-use function FindDifferent\formatters\stylishFormat\getDiffStylish;
+use function FindDifferent\parser\parse;
+use function FindDifferent\formatters\jsonFormat\genJsonFormat;
+use function FindDifferent\formatters\plainFormat\genPlainFormat;
+use function FindDifferent\formatters\stylishFormat\genStylishFormat;
 
-function getOutput($first, $second, $format)
+function genOutput($pathToFile1, $pathToFile2, $outputFormat)
 {
-    $treeBefore = getTree(getData($first));
-    $treeAfter = getTree(getData($second));
-
-    $diff = getDiff($treeBefore, $treeAfter);
+    $dataOfFile1 = parse($pathToFile1);
+    $dataOfFile2 = parse($pathToFile2);
     
-    sortTree($diff);
+    $tree1 = genTree($dataOfFile1);
+    $tree2 = genTree($dataOfFile2);
 
-    if ($format === 'json') {
-        $output = getDiffJson($diff);
-    } elseif ($format === 'plain') {
-        $output = getDiffPlain($diff);
-    } elseif ($format === 'stylish' || $format === null) {
-        $output = getDiffStylish($diff);
-    } else {
-        $output = 'gendiff: unknown format "' . $format . '"';
+    $diff = genDiff($tree1, $tree2);
+    $sortDiff = sortTree($diff);
+
+    switch ($outputFormat) {
+        case 'json':
+            $output = genJsonFormat($sortDiff);
+            break;
+        case 'plain':
+            $output = genPlainFormat($sortDiff);
+            break;
+        case 'stylish':
+        case null:
+            $output = genStylishFormat($sortDiff);
+            break;
+        default:
+            $output = 'gendiff: unknown format "' . $outputFormat . '"';
     }
-    
     return $output;
 }
 
-
-
-
-function getTree($data)
+function genTree($object)
 {
-    $data = get_object_vars($data);
-    $result = array_reduce(array_keys($data), function ($acc, $key) use ($data) {
+    $data = get_object_vars($object);
+    $tree = array_reduce(array_keys($data), function ($acc, $key) use ($data) {
         if (is_object($data[$key])) {
-            $children = getTree($data[$key]);
+            $children = genTree($data[$key]);
             $value = null;
         } else {
             $children = [];
@@ -51,57 +54,57 @@ function getTree($data)
         ];
         return $acc;
     }, []);
-    return $result;
+    return $tree;
 }
 
-function getDiff($treeBefore, $treeAfter)
+function genDiff($tree1, $tree2)
 {
-    $treeMerge = array_replace_recursive($treeBefore, $treeAfter);
-    $diff = function ($merge, $before, $after) use (&$diff) {
-        $result = array_reduce(array_keys($merge), function ($acc, $key) use ($merge, $before, $after, $diff) {
-            if ($merge[$key]['children'] != []) {
+    $treeMerge = array_replace_recursive($tree1, $tree2);
+    $diff = function ($nodeMerge, $node1, $node2) use (&$diff) {
+        $result = array_reduce(array_keys($nodeMerge), function ($acc, $key) use ($nodeMerge, $node1, $node2, $diff) {
+            if ($nodeMerge[$key]['children'] != []) {
                 $children = $diff(
-                    $merge[$key]['children'],
-                    $before[$key]['children'] ?? null,
-                    $after[$key]['children'] ?? null
+                    $nodeMerge[$key]['children'],
+                    $node1[$key]['children'] ?? null,
+                    $node2[$key]['children'] ?? null
                 );
             } else {
                 $children = [];
             }
-            
+
             $name = $key;
             $meta = null;
             $oldValue = null;
-            if (($before != null) && ($after != null)) {
-                if (!array_key_exists($key, $before)) {
+            if (($node1 != null) && ($node2 != null)) {
+                if (!array_key_exists($key, $node1)) {
                     $meta = 'add';
-                } elseif (!array_key_exists($key, $after)) {
+                } elseif (!array_key_exists($key, $node2)) {
                     $meta = 'deleted';
-                } elseif ($before != null) {
-                    if ($before[$key]['value'] !== $after[$key]['value']) {
-                        if ($before[$key]['value'] != null && $after[$key]['value'] != null) {
+                } elseif ($node1 != null) {
+                    if ($node1[$key]['value'] !== $node2[$key]['value']) {
+                        if ($node1[$key]['value'] != null && $node2[$key]['value'] != null) {
                             $meta = 'newValue';
-                            $oldValue = $before[$key]['value'];
-                        } elseif ($after[$key]['value'] === null) {
+                            $oldValue = $node1[$key]['value'];
+                        } elseif ($node2[$key]['value'] === null) {
                             $meta = 'newValue';
-                            $oldValue = $before[$key]['value'];
+                            $oldValue = $node1[$key]['value'];
                         } else {
                             $meta = 'newValue';
-                            $oldValue = $before[$key]['value'];
+                            $oldValue = $node1[$key]['value'];
                         }
                     }
                 }
             }
-            $acc[$key] = getNode($key, $merge[$key]['value'], $oldValue, $meta, $children);
+            $acc[$key] = genNode($key, $nodeMerge[$key]['value'], $oldValue, $meta, $children);
             return $acc;
         }, []);
         return $result;
     };
 
-    return $diff($treeMerge, $treeBefore, $treeAfter);
+    return $diff($treeMerge, $tree1, $tree2);
 }
 
-function getNode($name, $value, $oldValue, $meta, $children)
+function genNode($name, $value, $oldValue, $meta, $children)
 {
     return [
         'name' => $name,
@@ -112,14 +115,15 @@ function getNode($name, $value, $oldValue, $meta, $children)
     ];
 }
 
-function sortTree(&$tree)
+function sortTree($node)
 {
-    if (!is_array($tree)) {
-        return;
-    }
-    ksort($tree);
-    foreach ($tree as $key => $value) {
-        sortTree($tree[$key]);
-    }
-    return;
+    ksort($node);
+    $result = array_reduce(array_keys($node), function ($acc, $key) use ($node) {
+            $acc[$key] = $node[$key];
+        if ($node[$key]['children'] != []) {
+            $acc[$key]['children'] = sortTree($node[$key]['children']);
+        }
+        return $acc;
+    }, []);
+    return $result;
 }

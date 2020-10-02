@@ -5,7 +5,7 @@ namespace FindDifferent\docopt;
 use Docopt;
 use Funct\Collection;
 
-use function FindDifferent\comparison\getOutput;
+use function FindDifferent\comparison\genOutput;
 
 function runDocopt()
 {
@@ -28,10 +28,8 @@ function runDocopt()
     $firstFile = Collection\get($args, '<firstFile>');
     $secondFile = Collection\get($args, '<secondFile>');
 
-    $diff = getOutput($firstFile, $secondFile, $format);
-    
-    //print_r($diff);
+    $output = genOutput($firstFile, $secondFile, $format);
+    echo $output . "\n";
 
-    echo $diff . "\n";
     return;
 }

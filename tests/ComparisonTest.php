@@ -4,11 +4,11 @@ namespace FindDifferent\test;
 
 use PHPUnit\Framework\TestCase;
 
-use function FindDifferent\comparison\getOutput;
+use function FindDifferent\comparison\genOutput;
 
 class ComparisonTest extends TestCase
 {
-    public function testGetOutput()
+    public function testGenOutput()
     {
         $result1 =
             "{\n" .
@@ -89,30 +89,30 @@ class ComparisonTest extends TestCase
             '"group3":"addedKey"}';
 
 
-        $this->assertEquals($result1, getOutput(
+        $this->assertEquals($result1, genOutput(
             'tests/fixtures/before.json',
             'tests/fixtures/after.json',
             'stylish'
         ));
 
-        $this->assertEquals($result2, getOutput(
+        $this->assertEquals($result2, genOutput(
             'tests/fixtures/treeBefore.json',
             'tests/fixtures/treeAfter.json',
             'stylish'
         ));
 
-        $this->assertEquals($result2, getOutput(
+        $this->assertEquals($result2, genOutput(
             'tests/fixtures/treeBefore.yml',
             'tests/fixtures/treeAfter.yml',
             'stylish'
         ));
 
-        $this->assertEquals($result3, getOutput(
+        $this->assertEquals($result3, genOutput(
             'tests/fixtures/treeBefore.yml',
             'tests/fixtures/treeAfter.yml',
             'plain'
         ));
-        $this->assertEquals($result4, getOutput(
+        $this->assertEquals($result4, genOutput(
             'tests/fixtures/treeBefore.yml',
             'tests/fixtures/treeAfter.yml',
             'json'
