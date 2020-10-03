@@ -13,30 +13,29 @@
 1. Install globally composer
 2. > composer global require nekedio/php-project-lvl2
 
+[![asciicast](https://asciinema.org/a/WwTE4QimT9mcdfWdrNLj6sSp1.svg)](https://asciinema.org/a/WwTE4QimT9mcdfWdrNLj6sSp1)
+
 ### Help
 > gendiff --help
 
+[![asciicast](https://asciinema.org/a/LwjoGiPtgk0jSghqkNzOH3uNA.svg)](https://asciinema.org/a/LwjoGiPtgk0jSghqkNzOH3uNA)
+
 ### Compare two JSON
-> gendiff --format json firstFile.json secondFile.json
+> gendiff --format stylish firstFile.json secondFile.json
 
-[![asciicast](https://asciinema.org/a/331486.svg)](https://asciinema.org/a/331486)
-
-[![asciicast](https://asciinema.org/a/SuOe9DUDOZWpk3k0YE704sMQx.svg)](https://asciinema.org/a/SuOe9DUDOZWpk3k0YE704sMQx)
+[![asciicast](https://asciinema.org/a/pP0PI7EpH84GC2DNw0DP6rIQh.svg)](https://asciinema.org/a/pP0PI7EpH84GC2DNw0DP6rIQh)
 
 ### Compare two YML
-> gendiff --format json firstFile.yml secondFile.yml
+> gendiff --format stylish firstFile.yml secondFile.yml
 
-[![asciicast](https://asciinema.org/a/343404.svg)](https://asciinema.org/a/343404)
-
-[![asciicast](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc.svg)](https://asciinema.org/a/a102cv7e0SsqP2JotGY1WpKNc)
+[![asciicast](https://asciinema.org/a/92183Ohyncgdh5RZxNmwK5WWE.svg)](https://asciinema.org/a/92183Ohyncgdh5RZxNmwK5WWE)
 
 ### Plain output
-> gendiff --format plain firstFile.yml secondFile.yml
+> gendiff --format plain firstFile secondFile
 
-[![asciicast](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s.svg)](https://asciinema.org/a/E9FEtI1mjWruFCH8mWaktoM2s)
+[![asciicast](https://asciinema.org/a/tRoXNG8cmkgLTkhUlNt4GjoO1.svg)](https://asciinema.org/a/tRoXNG8cmkgLTkhUlNt4GjoO1)
 
 ### Json output
-> gendiff --format json firstFile.yml secondFile.yml
+> gendiff --format json firstFile secondFile
 
-[![asciicast](https://asciinema.org/a/bcYZCAdkWkZTKMeMzGTtbzCJf.svg)](https://asciinema.org/a/bcYZCAdkWkZTKMeMzGTtbzCJf)
-
+[![asciicast](https://asciinema.org/a/a0TGL0Il7noKBtTCbYnAZGf8Z.svg)](https://asciinema.org/a/a0TGL0Il7noKBtTCbYnAZGf8Z)
