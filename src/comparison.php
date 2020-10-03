@@ -18,6 +18,8 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
     $diff = genDiff($tree1, $tree2);
     $sortDiff = sortTree($diff);
 
+    // print_r($diff);
+
     switch ($outputFormat) {
         case 'json':
             $output = genJsonFormat($sortDiff);
@@ -67,100 +69,60 @@ function genDiff($tree1, $tree2)
 function traversalMerge($nodeMerge, $node1, $node2)
 {
     $result = array_reduce(array_keys($nodeMerge), function ($acc, $key) use ($nodeMerge, $node1, $node2) {
-        $children = getChildren($key, $nodeMerge, $node1, $node2);
-        
-        // $name = $key;
-        // $meta = null;
-        // $oldValue = null;
-        //
-        // if (($node1 != null) && ($node2 != null)) {
-        //     if (!array_key_exists($key, $node1)) {
-        //         $meta = 'add';
-        //     } elseif (!array_key_exists($key, $node2)) {
-        //         $meta = 'deleted';
-        //     } elseif ($node1 != null) {
-        //         if ($node1[$key]['value'] !== $node2[$key]['value']) {
-        //             if ($node1[$key]['value'] != null && $node2[$key]['value'] != null) {
-        //                 $meta = 'newValue';
-        //                 $oldValue = $node1[$key]['value'];
-        //             } elseif ($node2[$key]['value'] === null) {
-        //                 $meta = 'newValue';
-        //                 $oldValue = $node1[$key]['value'];
-        //             } else {
-        //                 $meta = 'newValue';
-        //                 $oldValue = $node1[$key]['value'];
-        //             }
-        //         }
-        //     }
-        // }
-        // $acc[$key] = genNode($key, $nodeMerge[$key]['value'], $oldValue, $meta, $children);
+        if ($nodeMerge[$key]['children'] != []) {
+            $children = traversalMerge(
+                $nodeMerge[$key]['children'],
+                $node1[$key]['children'] ?? null,
+                $node2[$key]['children'] ?? null
+            );
+        } else {
+            $children = [];
+        }
 
-        $acc[$key] = getNode($key, $nodeMerge, $node1, $node2, $children);
-        
+        if (($node1 != null) && ($node2 != null)) {
+            $acc[$key] = getNode(
+                $nodeMerge[$key],
+                $node1[$key] ?? null,
+                $node2[$key] ?? null,
+                $children
+            );
+        } else {
+            $acc[$key] = [
+                'value' => $nodeMerge[$key]['value'],
+                'oldValue' => null,
+                'meta' => null,
+                'children' => $children
+            ];
+        }
         return $acc;
     }, []);
     return $result;
 }
 
-
-
-
-
-
-
-function getChildren($key, $nodeMerge, $node1, $node2)
+function getNode($nodeMerge, $node1, $node2, $children)
 {
-    if ($nodeMerge[$key]['children'] != []) {
-        $children = traversalMerge(
-            $nodeMerge[$key]['children'],
-            $node1[$key]['children'] ?? null,
-            $node2[$key]['children'] ?? null
-        );
-    } else {
-        $children = [];
-    }
-    return $children;
-}
-
-
-
-
-function getNode($key, $nodeMerge, $node1, $node2, $children)
-{
-    $name = $key;
     $meta = null;
     $oldValue = null;
-    if (($node1 != null) && ($node2 != null)) {
-        if (!array_key_exists($key, $node1)) {
-            $meta = 'add';
-        } elseif (!array_key_exists($key, $node2)) {
-            $meta = 'deleted';
-        } elseif ($node1 != null) {
-            if ($node1[$key]['value'] !== $node2[$key]['value']) {
-                if ($node1[$key]['value'] != null && $node2[$key]['value'] != null) {
-                    $meta = 'newValue';
-                    $oldValue = $node1[$key]['value'];
-                } elseif ($node2[$key]['value'] === null) {
-                    $meta = 'newValue';
-                    $oldValue = $node1[$key]['value'];
-                } else {
-                    $meta = 'newValue';
-                    $oldValue = $node1[$key]['value'];
-                }
+    if ($node1 === null) {
+        $meta = 'add';
+    } elseif ($node2 === null) {
+        $meta = 'deleted';
+    } elseif ($node1 != null) {
+        if ($node1['value'] !== $node2['value']) {
+            if ($node1['value'] != null && $node2['value'] != null) {
+                $meta = 'newValue';
+                $oldValue = $node1['value'];
+            } elseif ($node2['value'] === null) {
+                $meta = 'newValue';
+                $oldValue = $node1['value'];
+            } else {
+                $meta = 'newValue';
+                $oldValue = $node1['value'];
             }
         }
     }
-    $acc = genNode($key, $nodeMerge[$key]['value'], $oldValue, $meta, $children);
-    return $acc;
-}
-
-
-
-function genNode($name, $value, $oldValue, $meta, $children)
-{
     return [
-        //'name' => $name,
-        'value' => $value,
+        'value' => $nodeMerge['value'],
         'oldValue' => $oldValue,
         'meta' => $meta,
         'children' => $children
