@@ -9,12 +9,9 @@ function genPlainFormat($tree, $path = "")
 {
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $path) {
         $path = $path . "." . $key;
-        $acc[] = event(
+        $acc[] = getChanged(
             $path,
-            $tree[$key]['meta'],
-            $tree[$key]['value'],
-            $tree[$key]['children'],
-            $tree[$key]['oldValue'] ?? null
+            $tree[$key]
         );
         if ($tree[$key]['children'] != []) {
             $acc[] = genPlainFormat($tree[$key]['children'], $path);
@@ -24,14 +21,15 @@ function genPlainFormat($tree, $path = "")
     return implode("\n", delVoidLine($result));
 }
 
-function event($path, $meta, $value, $children, $oldValue)
+function getChanged($path, $node)
 {
-    if ($value === null) {
+    $oldValue = $node['oldValue'] ?? null;
+    if ($node['value'] === null) {
         $value = '[complex value]';
-    } elseif ($value === false || $value === true) {
-        $value = showBoolValue($value);
+    } elseif ($node['value'] === false || $node['value'] === true) {
+        $value = showBoolValue($node['value']);
     } else {
-        $value = "'" . $value . "'";
+        $value = "'" . $node['value'] . "'";
     }
     if ($oldValue === null) {
         $oldValue = '[complex value]';
@@ -41,12 +39,12 @@ function event($path, $meta, $value, $children, $oldValue)
         $oldValue = "'" . $oldValue . "'";
     }
     $path = "'" . trim($path, ".") . "'";
-    if ($meta  === 'add') {
+    if ($node['meta']  === 'add') {
         $event = "Property " . $path . " was added with value: " . $value;
-    } elseif ($meta === 'deleted') {
+    } elseif ($node['meta'] === 'deleted') {
         $event = "Property " . $path . " was removed";
-    } elseif ($meta === 'newValue' || $meta === 'oldValue') {
-        if ($meta === 'newValue') {
+    } elseif ($node['meta'] === 'newValue' || $node['meta'] === 'oldValue') {
+        if ($node['meta'] === 'newValue') {
             $event = "Property " . $path . " was updated. From " . $oldValue . " to " . $value;
         } else {
             $event = null;
@@ -54,7 +52,6 @@ function event($path, $meta, $value, $children, $oldValue)
     } else {
         $event = null;
     }
-
     return $event;
 }
 

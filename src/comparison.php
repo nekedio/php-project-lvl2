@@ -18,8 +18,6 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
     $diff = genDiff($tree1, $tree2);
     $sortDiff = sortTree($diff);
 
-    // print_r($diff);
-
     switch ($outputFormat) {
         case 'json':
             $output = genJsonFormat($sortDiff);
