@@ -48,7 +48,6 @@ function genTree($object)
         }
 
         $acc[$key] = [
-            //'name' => $key,
             'value' => $value,
             'children' => $children
         ];
