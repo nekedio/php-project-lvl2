@@ -102,19 +102,9 @@ function getNode($nodeMerge, $node1, $node2, $children)
         $meta = 'add';
     } elseif ($node2 === null) {
         $meta = 'deleted';
-    } elseif ($node1 != null) {
-        if ($node1['value'] !== $node2['value']) {
-            if ($node1['value'] != null && $node2['value'] != null) {
-                $meta = 'newValue';
-                $oldValue = $node1['value'];
-            } elseif ($node2['value'] === null) {
-                $meta = 'newValue';
-                $oldValue = $node1['value'];
-            } else {
-                $meta = 'newValue';
-                $oldValue = $node1['value'];
-            }
-        }
+    } elseif ($node1['value'] !== $node2['value']) {
+        $meta = 'newValue';
+        $oldValue = $node1['value'];
     }
     return [
         'value' => $nodeMerge['value'],
