@@ -80,12 +80,7 @@ function traversalMerge($nodeMerge, $node1, $node2)
         }
 
         if (($node1 != null) && ($node2 != null)) {
-            $acc[$key] = getNode(
-                $nodeMerge[$key],
-                $node1[$key] ?? null,
-                $node2[$key] ?? null,
-                $children
-            );
+            $acc[$key] = getNode($nodeMerge[$key], $node1[$key] ?? null, $node2[$key] ?? null, $children);
         } else {
             $acc[$key] = [
                 'value' => $nodeMerge[$key]['value'],
