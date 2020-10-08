@@ -12,7 +12,7 @@ class ComparisonTest extends TestCase
     {
         $result1 =
             "{\n" .
-            "  - !follow: false\n" .
+            "  - follow: false\n" .
             "    host: hexlet.io\n" .
             "  - proxy: 123.234.53.22\n" .
             "  - timeout: 50\n" .
