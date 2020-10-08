@@ -23,13 +23,8 @@ function runDocopt()
       --format <fmt>                Report format [default: stylish]
     DOC;
 
-    $args = Docopt::handle($doc, array('version' => 'Find different 0.1'));
-    $format = Collection\get($args, '--format');
-    $firstFile = Collection\get($args, '<firstFile>');
-    $secondFile = Collection\get($args, '<secondFile>');
-
-    $output = genOutput($firstFile, $secondFile, $format);
+    $args = Docopt::handle($doc, array('version' => 'Find different 0.11'));
+    
+    $output = genOutput($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
     echo $output . "\n";
-
-    return;
 }

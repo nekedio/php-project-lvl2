@@ -4,38 +4,38 @@ namespace FindDifferent\parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse(string $pathToFile)
+function parse(string $link)
 {
-    $expansion = getExpansion($pathToFile);
+    $expansion = getExpansion($link);
+    $contents = file_get_contents($link);
     switch ($expansion) {
         case 'json':
-            $data = parseJson($pathToFile);
+            $data = parseJson($contents);
             break;
         case 'yml':
-            $data = parseYaml($pathToFile);
+            $data = parseYaml($contents);
             break;
         default:
             $error = "ERROR!\n" . "gendiff: incorrect expansion file \"." . $expansion . "\"\n";
             echo $error;
     }
-    
     return $data;
 }
 
-function parseJson(string $jsonFile)
+function parseJson(string $jsonContents)
 {
-    $data = json_decode(file_get_contents($jsonFile));
+    $data = json_decode($jsonContents);
     return $data;
 }
 
-function parseYaml(string $yamlFile)
+function parseYaml(string $yamlContents)
 {
-    $data = Yaml::parseFile($yamlFile, Yaml::PARSE_OBJECT_FOR_MAP);
+    $data = Yaml::parse($yamlContents, Yaml::PARSE_OBJECT_FOR_MAP);
     return $data;
 }
 
-function getExpansion(string $nameFile)
+function getExpansion(string $link)
 {
-    [, $expansion] = explode(".", $nameFile);
+    [, $expansion] = explode(".", $link);
     return $expansion;
 }
