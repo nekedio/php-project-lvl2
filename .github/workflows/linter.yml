@@ -21,8 +21,8 @@ jobs:
       run: make install
     - name: Start linter
       run: make lint
-    - name: Start phpunit test
-      run: make test
+#    - name: Start phpunit test
+#      run: make test
 # Кодклимат
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v2.6.0 
