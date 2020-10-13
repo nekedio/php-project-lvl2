@@ -1,6 +1,6 @@
 {
     "name": "nekedio/php-project-lvl2",
-    "description": "find different",
+    "description": "Compare tool",
     "bin": [
         "./bin/gendiff"
         ],

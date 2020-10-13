@@ -1,16 +1,18 @@
 <?php
 
-namespace FindDifferent\comparison;
+namespace CompareTool\comparison;
 
-use function FindDifferent\parser\parse;
-use function FindDifferent\formatters\jsonFormat\genJsonFormat;
-use function FindDifferent\formatters\plainFormat\genPlainFormat;
-use function FindDifferent\formatters\stylishFormat\genStylishFormat;
+use Exception;
+
+use function CompareTool\parser\parse;
+use function CompareTool\formatters\jsonFormat\genJsonFormat;
+use function CompareTool\formatters\plainFormat\genPlainFormat;
+use function CompareTool\formatters\stylishFormat\genStylishFormat;
 
 function genOutput($pathToFile1, $pathToFile2, $outputFormat)
 {
-    $dataOfFile1 = parse($pathToFile1);
-    $dataOfFile2 = parse($pathToFile2);
+    $dataOfFile1 = parse(file_get_contents($pathToFile1), getExtension($pathToFile1));
+    $dataOfFile2 = parse(file_get_contents($pathToFile2), getExtension($pathToFile2));
     
     $tree1 = genTree($dataOfFile1);
     $tree2 = genTree($dataOfFile2);
@@ -30,9 +32,15 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
             $output = genStylishFormat($sortDiff);
             break;
         default:
-            $output = 'gendiff: unknown format "' . $outputFormat . '"';
+            throw new Exception("Unknown format '$outputFormat'");
     }
     return $output;
+}
+
+function getExtension(string $pathToFile)
+{
+    [, $extension] = explode(".", $pathToFile);
+    return $extension;
 }
 
 function genTree($object)

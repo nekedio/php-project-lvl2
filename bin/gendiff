@@ -11,4 +11,4 @@ if (file_exists($autoloadGlob)) {
     require_once $autoloadLoc;
 }
 
-FindDifferent\docopt\runDocopt();
+CompareTool\docopt\runDocopt();

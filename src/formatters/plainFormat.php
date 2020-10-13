@@ -1,9 +1,9 @@
 <?php
 
-namespace FindDifferent\formatters\plainFormat;
+namespace CompareTool\formatters\plainFormat;
 
 use function Funct\Strings\times;
-use function FindDifferent\formatters\additionalFunc\showBoolValue;
+use function CompareTool\formatters\additionalFunc\showBoolValue;
 
 function genPlainFormat($tree, $path = "")
 {

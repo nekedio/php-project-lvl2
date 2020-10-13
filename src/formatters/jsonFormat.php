@@ -1,6 +1,6 @@
 <?php
 
-namespace FindDifferent\formatters\jsonFormat;
+namespace CompareTool\formatters\jsonFormat;
 
 function genJsonFormat($tree)
 {

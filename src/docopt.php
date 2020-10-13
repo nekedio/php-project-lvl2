@@ -1,11 +1,11 @@
 <?php
 
-namespace FindDifferent\docopt;
+namespace CompareTool\docopt;
 
 use Docopt;
 use Funct\Collection;
 
-use function FindDifferent\comparison\genOutput;
+use function CompareTool\comparison\genOutput;
 
 function runDocopt()
 {

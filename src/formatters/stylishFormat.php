@@ -1,9 +1,9 @@
 <?php
 
-namespace FindDifferent\formatters\stylishFormat;
+namespace CompareTool\formatters\stylishFormat;
 
 use function Funct\Strings\times;
-use function FindDifferent\formatters\additionalFunc\showBoolValue;
+use function CompareTool\formatters\additionalFunc\showBoolValue;
 
 function genStylishFormat($tree, $depth = 1)
 {

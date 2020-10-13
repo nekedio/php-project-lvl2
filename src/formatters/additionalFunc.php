@@ -1,6 +1,6 @@
 <?php
 
-namespace FindDifferent\formatters\additionalFunc;
+namespace CompareTool\formatters\additionalFunc;
 
 function showBoolValue($boolValue)
 {

@@ -10,4 +10,5 @@ test:
 ftest:
 	php bin/gendiff tests/fixtures/before.yml tests/fixtures/after.yml
 	php bin/gendiff --format json tests/fixtures/before.yml tests/fixtures/after.yml
-	php bin/gendiff --format yml tests/fixtures/before.yml tests/fixtures/after.yml
+	php bin/gendiff --format plain tests/fixtures/before.yml tests/fixtures/after.yml
+	php bin/gendiff --format stylish tests/fixtures/before.yml tests/fixtures/after.yml

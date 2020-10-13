@@ -1,23 +1,21 @@
 <?php
 
-namespace FindDifferent\parser;
+namespace CompareTool\parser;
 
 use Symfony\Component\Yaml\Yaml;
+use Exception;
 
-function parse(string $link)
+function parse(string $content, string $extension)
 {
-    $expansion = getExpansion($link);
-    $contents = file_get_contents($link);
-    switch ($expansion) {
+    switch ($extension) {
         case 'json':
-            $data = parseJson($contents);
+            $data = parseJson($content);
             break;
         case 'yml':
-            $data = parseYaml($contents);
+            $data = parseYaml($content);
             break;
         default:
-            $error = "ERROR!\n" . "gendiff: incorrect expansion file \"." . $expansion . "\"\n";
-            echo $error;
+            throw new Exception("Incorrect extension file '.$extension'");
     }
     return $data;
 }
@@ -32,10 +30,4 @@ function parseYaml(string $yamlContents)
 {
     $data = Yaml::parse($yamlContents, Yaml::PARSE_OBJECT_FOR_MAP);
     return $data;
-}
-
-function getExpansion(string $link)
-{
-    [, $expansion] = explode(".", $link);
-    return $expansion;
 }
