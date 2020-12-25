@@ -5,11 +5,13 @@ namespace CompareTool\formatters\additionalFunc;
 function showBoolValue($boolValue)
 {
     if ($boolValue === true) {
-        $value = 'true';
-    } elseif ($boolValue === false) {
-        $value = 'false';
-    } else {
-        $value = $boolValue;
+        return 'true';
     }
-    return $value;
+    if ($boolValue === false) {
+        return 'false';
+    }
+    if ($boolValue === null){
+        return 'null';
+    }
+    return $boolValue;
 }
