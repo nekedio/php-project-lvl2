@@ -26,11 +26,40 @@ class ComparisonTest extends TestCase
     public function additionProvider()
     {
         return [
-            //['tests/fixtures/result1.diff', 'tests/fixtures/before.json', 'tests/fixtures/after.json', 'stylish'],
-            ['tests/fixtures/result2.diff', 'tests/fixtures/treeBefore.json', 'tests/fixtures/treeAfter.json', 'stylish'],
-            //['tests/fixtures/result2.diff', 'tests/fixtures/treeBefore.yml', 'tests/fixtures/treeAfter.yml', 'stylish'],
-            //['tests/fixtures/result3.diff', 'tests/fixtures/treeBefore.yml', 'tests/fixtures/treeAfter.yml', 'plain'],
-            //['tests/fixtures/result4.diff', 'tests/fixtures/treeBefore.json', 'tests/fixtures/treeAfter.json', 'json'],
+            [
+                'tests/fixtures/result1.diff',
+                'tests/fixtures/before.json',
+                'tests/fixtures/after.json',
+                'stylish'
+            ],
+            
+            [
+                'tests/fixtures/result2.diff',
+                'tests/fixtures/treeBefore.json',
+                'tests/fixtures/treeAfter.json',
+                'stylish'
+            ],
+            
+            [
+                'tests/fixtures/result2.diff',
+                'tests/fixtures/treeBefore.yml',
+                'tests/fixtures/treeAfter.yml',
+                'stylish'
+            ],
+            
+            [
+                'tests/fixtures/result3.diff',
+                'tests/fixtures/treeBefore.yml',
+                'tests/fixtures/treeAfter.yml',
+                'plain'
+            ],
+            
+            [
+                'tests/fixtures/result4.diff',
+                'tests/fixtures/treeBefore.json',
+                'tests/fixtures/treeAfter.json',
+                'json'
+            ],
         ];
     }
 }

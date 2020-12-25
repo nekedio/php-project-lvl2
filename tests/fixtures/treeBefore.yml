@@ -6,7 +6,7 @@ common:
   setting6:
     key: value
     doge:
-      wow: too much
+      wow: ''
 group1:
   baz: bas
   foo: bar

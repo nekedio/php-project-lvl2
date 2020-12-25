@@ -11,8 +11,7 @@
             "src/parser.php",
             "src/formatters/jsonFormat.php",
             "src/formatters/plainFormat.php",
-            "src/formatters/stylishFormat.php",
-            "src/formatters/additionalFunc.php"
+            "src/formatters/stylishFormat.php"
         ]
     },
     "scripts": {
