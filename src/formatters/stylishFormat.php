@@ -1,6 +1,6 @@
 <?php
 
-namespace CompareTool\formatters\stylishFormat;
+namespace GenerateDiff\formatters\stylishFormat;
 
 use function Funct\Strings\times;
 
@@ -9,10 +9,10 @@ function genStylishFormat($tree, $depth = 1)
     $indent = genIndent($depth);
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
         $node = $tree[$key];
-        if ($tree[$key]['children'] === []) {
-            $acc[] = genLine($tree, $key, $depth);
+        if ($node['children'] != []) {
+            $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($node['children'], $depth + 1);
         } else {
-            $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($tree[$key]['children'], $depth + 1);
+            $acc[] = genLine($node, $key, $depth);
         }
         return $acc;
     }, []);
@@ -24,24 +24,25 @@ function genStylishFormat($tree, $depth = 1)
     return implode("\n", $result);
 }
 
-function genLine($tree, $key, $depth)
+function genLine($node, $key, $depth)
 {
-    $value1 = showBoolValueStylishFormat($tree[$key]['value1']);
-    $value2 = showBoolValueStylishFormat($tree[$key]['value2']);
+    $value1 = boolToString($node['value1']);
+    $value2 = boolToString($node['value2']);
     $indent = genIndent($depth);
-    if ($value1 === $value2) {
+
+    if ($node['meta'] == 'notChange') {
         $result = $indent['standart'] . $key . ": " . $value2;
         return $result;
     }
-    if ($tree[$key]['meta'] == 'addNode') {
+    if ($node['meta'] == 'addNode') {
         $result = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
         return $result;
     }
-    if ($tree[$key]['meta'] == 'deletedNode') {
+    if ($node['meta'] == 'deletedNode') {
         $result = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
         return $result;
     }
-    if (($value1 !== $value2)) {
+    if ($node['meta'] == 'change') {
         $result1 = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
         $result2 = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
         $result = implode("\n", [$result1, $result2]);
@@ -61,7 +62,7 @@ function genLineValue($value, $depth)
             }
             return $acc;
         }, []);
-        
+
         if (is_array($node)) {
             $result = encloseInParentheses($result, $depth);
         }
@@ -88,7 +89,7 @@ function genIndent($depth)
     ];
 }
 
-function showBoolValueStylishFormat($boolValue)
+function boolToString($boolValue)
 {
     if ($boolValue === true) {
         return 'true';

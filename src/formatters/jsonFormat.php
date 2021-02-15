@@ -1,8 +1,8 @@
 <?php
 
-namespace CompareTool\formatters\jsonFormat;
+namespace GenerateDiff\formatters\jsonFormat;
 
 function genJsonFormat($tree)
 {
-        return json_encode($tree);
+    return json_encode($tree);
 }

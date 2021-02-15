@@ -1,6 +1,6 @@
 <?php
 
-namespace CompareTool\formatters\plainFormat;
+namespace GenerateDiff\formatters\plainFormat;
 
 use function Funct\Strings\times;
 

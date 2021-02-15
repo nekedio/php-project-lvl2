@@ -1,10 +1,10 @@
 <?php
 
-namespace CompareTool\test;
+namespace GenerateDiff\test;
 
 use PHPUnit\Framework\TestCase;
 
-use function CompareTool\comparison\genOutput;
+use function GenerateDiff\comparison\genOutput;
 
 class ComparisonTest extends TestCase
 {
@@ -14,52 +14,19 @@ class ComparisonTest extends TestCase
 
     public function testGenOutput($expected, $before, $after, $format)
     {
-        $diffStulishFormat1 = rtrim(file_get_contents($expected));
+        $path = 'tests/fixtures/';
+        $diff = rtrim(file_get_contents($path . $expected));
         
-        $this->assertEquals($diffStulishFormat1, genOutput(
-            $before,
-            $after,
-            $format
-        ));
+        $this->assertEquals($diff, genOutput($path . $before, $path . $after, $format));
     }
 
     public function additionProvider()
     {
         return [
-            [
-                'tests/fixtures/result1.diff',
-                'tests/fixtures/before.json',
-                'tests/fixtures/after.json',
-                'stylish'
-            ],
-            
-            [
-                'tests/fixtures/result2.diff',
-                'tests/fixtures/treeBefore.json',
-                'tests/fixtures/treeAfter.json',
-                'stylish'
-            ],
-            
-            [
-                'tests/fixtures/result2.diff',
-                'tests/fixtures/treeBefore.yml',
-                'tests/fixtures/treeAfter.yml',
-                'stylish'
-            ],
-            
-            [
-                'tests/fixtures/result3.diff',
-                'tests/fixtures/treeBefore.yml',
-                'tests/fixtures/treeAfter.yml',
-                'plain'
-            ],
-            
-            [
-                'tests/fixtures/result4.diff',
-                'tests/fixtures/treeBefore.json',
-                'tests/fixtures/treeAfter.json',
-                'json'
-            ],
+            ['diff.stylish', 'treeBefore.json', 'treeAfter.json', 'stylish'],
+            ['diff.stylish', 'treeBefore.yml', 'treeAfter.yml', 'stylish'],
+            ['diff.plain', 'treeBefore.yml', 'treeAfter.yml', 'plain'],
+            //['diff.json', 'treeBefore.json', 'treeAfter.json', 'json'],
         ];
     }
 }

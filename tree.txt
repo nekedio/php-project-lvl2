@@ -1,0 +1,233 @@
+
+Array
+(
+    [common] => Array
+        (
+            [value1] => 
+            [value2] => 
+            [meta] => 
+            [children] => Array
+                (
+                    [setting1] => Array
+                        (
+                            [value1] => Value 1
+                            [value2] => Value 1
+                            [meta] => 
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting2] => Array
+                        (
+                            [value1] => 200
+                            [value2] => 
+                            [meta] => deletedNode
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting3] => Array
+                        (
+                            [value1] => 1
+                            [value2] => 
+                            [meta] => 
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting6] => Array
+                        (
+                            [value1] => 
+                            [value2] => 
+                            [meta] => 
+                            [children] => Array
+                                (
+                                    [key] => Array
+                                        (
+                                            [value1] => value
+                                            [value2] => value
+                                            [meta] => 
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                    [doge] => Array
+                                        (
+                                            [value1] => 
+                                            [value2] => 
+                                            [meta] => 
+                                            [children] => Array
+                                                (
+                                                    [wow] => Array
+                                                        (
+                                                            [value1] => 
+                                                            [value2] => so much
+                                                            [meta] => 
+                                                            [children] => Array
+                                                                (
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                        )
+
+                                    [ops] => Array
+                                        (
+                                            [value1] => 
+                                            [value2] => vops
+                                            [meta] => addNode
+                                            [children] => Array
+                                                (
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                    [follow] => Array
+                        (
+                            [value1] => 
+                            [value2] => 
+                            [meta] => addNode
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting4] => Array
+                        (
+                            [value1] => 
+                            [value2] => blah blah
+                            [meta] => addNode
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [setting5] => Array
+                        (
+                            [value1] => 
+                            [value2] => stdClass Object
+                                (
+                                    [key5] => value5
+                                )
+
+                            [meta] => addNode
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [group1] => Array
+        (
+            [value1] => 
+            [value2] => 
+            [meta] => 
+            [children] => Array
+                (
+                    [baz] => Array
+                        (
+                            [value1] => bas
+                            [value2] => bars
+                            [meta] => 
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [foo] => Array
+                        (
+                            [value1] => bar
+                            [value2] => bar
+                            [meta] => 
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                    [nest] => Array
+                        (
+                            [value1] => stdClass Object
+                                (
+                                    [key] => value
+                                )
+
+                            [value2] => str
+                            [meta] => 
+                            [children] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [group2] => Array
+        (
+            [value1] => stdClass Object
+                (
+                    [abc] => 12345
+                    [deep] => stdClass Object
+                        (
+                            [id] => 45
+                        )
+
+                )
+
+            [value2] => 
+            [meta] => deletedNode
+            [children] => Array
+                (
+                )
+
+        )
+
+    [group3] => Array
+        (
+            [value1] => 
+            [value2] => stdClass Object
+                (
+                    [fee] => 100500
+                    [deep] => stdClass Object
+                        (
+                            [id] => stdClass Object
+                                (
+                                    [number] => 45
+                                )
+
+                        )
+
+                )
+
+            [meta] => addNode
+            [children] => Array
+                (
+                )
+
+        )
+
+)
+

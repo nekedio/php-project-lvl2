@@ -6,7 +6,6 @@
         ],
     "autoload": {
         "files": [
-            "src/docopt.php",
             "src/comparison.php",
             "src/parser.php",
             "src/formatters/jsonFormat.php",
