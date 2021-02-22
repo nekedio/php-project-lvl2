@@ -10,7 +10,8 @@
             "src/parser.php",
             "src/formatters/jsonFormat.php",
             "src/formatters/plainFormat.php",
-            "src/formatters/stylishFormat.php"
+            "src/formatters/stylishFormat.php",
+            "src/formatters/treeProcessing.php"
         ]
     },
     "scripts": {

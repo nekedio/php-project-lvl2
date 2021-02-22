@@ -2,52 +2,33 @@
 
 namespace GenerateDiff\formatters\stylishFormat;
 
+use Exception;
+
 use function Funct\Strings\times;
+use function GenerateDiff\formatters\treeProcessing\isLeaf;
 
-function genStylishFormat($tree, $depth = 1)
+function genIndent($depth)
 {
-    $indent = genIndent($depth);
-    $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
-        $node = $tree[$key];
-        if ($node['children'] != []) {
-            $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($node['children'], $depth + 1);
-        } else {
-            $acc[] = genLine($node, $key, $depth);
-        }
-        return $acc;
-    }, []);
-
-    if (is_array($tree)) {
-        $result = encloseInParentheses($result, $depth);
-    }
-
-    return implode("\n", $result);
+    return [
+        'standart' => times("    ", $depth),
+        'close' => times("    ", $depth - 1),
+        'openAdd' => times("    ", $depth - 1) . "  + ",
+        'openDel' => times("    ", $depth - 1) . "  - "
+    ];
 }
 
-function genLine($node, $key, $depth)
+function boolToString($boolValue)
 {
-    $value1 = boolToString($node['value1']);
-    $value2 = boolToString($node['value2']);
-    $indent = genIndent($depth);
-
-    if ($node['meta'] == 'notChange') {
-        $result = $indent['standart'] . $key . ": " . $value2;
-        return $result;
+    if ($boolValue === true) {
+        return 'true';
     }
-    if ($node['meta'] == 'addNode') {
-        $result = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
-        return $result;
+    if ($boolValue === false) {
+        return 'false';
     }
-    if ($node['meta'] == 'deletedNode') {
-        $result = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
-        return $result;
+    if ($boolValue === null) {
+        return 'null';
     }
-    if ($node['meta'] == 'change') {
-        $result1 = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
-        $result2 = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
-        $result = implode("\n", [$result1, $result2]);
-        return $result;
-    }
+    return $boolValue;
 }
 
 function genLineValue($value, $depth)
@@ -72,6 +53,33 @@ function genLineValue($value, $depth)
     return $value;
 }
 
+function genLine($node, $key, $depth)
+{
+    $value1 = boolToString($node['value1']);
+    $value2 = boolToString($node['value2']);
+    $indent = genIndent($depth);
+
+    switch ($node['meta']) {
+        case 'notChangedValue':
+            $result = $indent['standart'] . $key . ": " . $value2;
+            break;
+        case 'addedNode':
+            $result = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
+            break;
+        case 'removedNode':
+            $result = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
+            break;
+        case 'changedValue':
+            $result1 = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
+            $result2 = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
+            $result = implode("\n", [$result1, $result2]);
+            break;
+        default:
+            throw new Exception("\"{$node['meta']}\" is invalid meta");
+    }
+    return $result;
+}
+
 function encloseInParentheses($node, $depth)
 {
     array_unshift($node, "{");
@@ -79,26 +87,22 @@ function encloseInParentheses($node, $depth)
     return $node;
 }
 
-function genIndent($depth)
+function genStylishFormat($tree, $depth = 1)
 {
-    return [
-        'standart' => times("    ", $depth),
-        'close' => times("    ", $depth - 1),
-        'openAdd' => times("    ", $depth - 1) . "  + ",
-        'openDel' => times("    ", $depth - 1) . "  - "
-    ];
-}
+    $indent = genIndent($depth);
+    $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
+        $node = $tree[$key];
+        if (isLeaf($node)) {
+            $acc[] = genLine($node, $key, $depth);
+        } else {
+            $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($node['children'], $depth + 1);
+        }
+        return $acc;
+    }, []);
 
-function boolToString($boolValue)
-{
-    if ($boolValue === true) {
-        return 'true';
+    if (is_array($tree)) {
+        $result = encloseInParentheses($result, $depth);
     }
-    if ($boolValue === false) {
-        return 'false';
-    }
-    if ($boolValue === null) {
-        return 'null';
-    }
-    return $boolValue;
+
+    return implode("\n", $result);
 }

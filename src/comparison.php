@@ -33,17 +33,18 @@ function getNode($children)
 function compareValue($data1, $data2, $key)
 {
     if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-        return 'addNode';
+        return 'addedNode';
     }
     if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
-        return 'deletedNode';
+        return 'removedNode';
     }
     if ($data1[$key] === $data2[$key]) {
-        return 'notChange';
+        return 'notChangedValue';
     }
     if ($data1[$key] !== $data2[$key]) {
-        return 'change';
+        return 'changedValue';
     }
+    throw new Exception("The node state is not described");
     return;
 }
 
@@ -70,20 +71,17 @@ function genDiff($objectData1, $objectData2)
     return  $result;
 }
 
-function getExtension(string $pathToFile)
-{
-    [, $extension] = explode(".", $pathToFile);
-    return $extension;
-}
-
 function genOutput($pathToFile1, $pathToFile2, $outputFormat)
 {
-    $dataOfFile1 = parse(file_get_contents($pathToFile1), getExtension($pathToFile1));
-    $dataOfFile2 = parse(file_get_contents($pathToFile2), getExtension($pathToFile2));
-
+    $dataOfFile1 = parse(
+        file_get_contents($pathToFile1),
+        pathinfo($pathToFile1, PATHINFO_EXTENSION)
+    );
+    $dataOfFile2 = parse(
+        file_get_contents($pathToFile2),
+        pathinfo($pathToFile2, PATHINFO_EXTENSION)
+    );
     $diff = genDiff($dataOfFile1, $dataOfFile2);
-
-    //print_r($diff);
 
     switch ($outputFormat) {
         case 'json':
@@ -93,7 +91,6 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
             $output = genPlainFormat($diff);
             break;
         case 'stylish':
-        case null:
             $output = genStylishFormat($diff);
             break;
         default:

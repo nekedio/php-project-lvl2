@@ -30,6 +30,5 @@ Options:
 DOC;
 
 $args = Docopt::handle($doc, array('version' => 'Find different 0.11'));
-
 $output = genOutput($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
 echo $output . "\n";
