@@ -5,7 +5,6 @@ namespace GenerateDiff\formatters\plainFormat;
 use Exception;
 
 use function Funct\Strings\times;
-use function GenerateDiff\formatters\treeProcessing\isLeaf;
 
 function boolToString($boolValue)
 {
@@ -43,6 +42,10 @@ function getChanged($path, $node)
     $value1 = getValue($node['value1']);
     $value2 = getValue($node['value2']);
 
+    if ($node['type'] == 'node') {
+        return "";
+    }
+    
     switch ($node['meta']) {
         case 'addedNode':
             $event = "Property " . $path . " was added with value: " . $value2;
@@ -54,7 +57,6 @@ function getChanged($path, $node)
             $event = "Property " . $path . " was updated. From " . $value1 . " to " . $value2;
             break;
         case 'notChangedValue':
-        case null:
             $event = "";
             break;
         default:
@@ -70,7 +72,7 @@ function genPlainFormat($tree, $path = "")
         $node = $tree[$key];
         $acc[] = getChanged($path, $node);
 
-        if (!isLeaf($node)) {
+        if ($node['type'] == 'node') {
             $acc[] = genPlainFormat($node['children'], $path);
         }
         return $acc;

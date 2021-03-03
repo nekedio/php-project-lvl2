@@ -5,7 +5,6 @@ namespace GenerateDiff\formatters\stylishFormat;
 use Exception;
 
 use function Funct\Strings\times;
-use function GenerateDiff\formatters\treeProcessing\isLeaf;
 
 function genIndent($depth)
 {
@@ -92,7 +91,7 @@ function genStylishFormat($tree, $depth = 1)
     $indent = genIndent($depth);
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
         $node = $tree[$key];
-        if (isLeaf($node)) {
+        if ($node['type'] == 'leaf') {
             $acc[] = genLine($node, $key, $depth);
         } else {
             $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($node['children'], $depth + 1);

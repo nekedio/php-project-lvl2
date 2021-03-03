@@ -15,6 +15,7 @@ function getLeaf($value1, $value2, $meta)
     return [
         'value1' => $value1,
         'value2' => $value2,
+        'type' => 'leaf',
         'meta' => $meta,
         'children' => [],
     ];
@@ -25,6 +26,7 @@ function getNode($children)
     return [
         'value1' => null,
         'value2' => null,
+        'type' => 'node',
         'meta' => null,
         'children' => $children,
     ];
@@ -82,7 +84,6 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
         pathinfo($pathToFile2, PATHINFO_EXTENSION)
     );
     $diff = genDiff($dataOfFile1, $dataOfFile2);
-
     switch ($outputFormat) {
         case 'json':
             $output = genJsonFormat($diff);
