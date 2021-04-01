@@ -60,17 +60,17 @@ function genLine($node, $key, $depth)
 
     switch ($node['meta']) {
         case 'notChangedValue':
-            $result = $indent['standart'] . $key . ": " . $value2;
+            $result = $indent['standart'] . $node['name'] . ": " . $value2;
             break;
         case 'addedNode':
-            $result = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
+            $result = $indent['openAdd'] . $node['name'] . ": " . genLineValue($value2, $depth + 1);
             break;
         case 'removedNode':
-            $result = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
+            $result = $indent['openDel'] . $node['name'] . ": " . genLineValue($value1, $depth + 1);
             break;
         case 'changedValue':
-            $result1 = $indent['openDel'] . $key . ": " . genLineValue($value1, $depth + 1);
-            $result2 = $indent['openAdd'] . $key . ": " . genLineValue($value2, $depth + 1);
+            $result1 = $indent['openDel'] . $node['name'] . ": " . genLineValue($value1, $depth + 1);
+            $result2 = $indent['openAdd'] . $node['name'] . ": " . genLineValue($value2, $depth + 1);
             $result = implode("\n", [$result1, $result2]);
             break;
         default:
@@ -94,7 +94,8 @@ function genStylishFormat($tree, $depth = 1)
         if ($node['type'] == 'leaf') {
             $acc[] = genLine($node, $key, $depth);
         } else {
-            $acc[] = $indent['standart'] . $key . ": " . genStylishFormat($node['children'], $depth + 1);
+            //print_r($node);
+            $acc[] = $indent['standart'] . $node['name'] . ": " . genStylishFormat($node['children'], $depth + 1);
         }
         return $acc;
     }, []);

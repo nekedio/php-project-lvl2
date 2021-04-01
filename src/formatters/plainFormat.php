@@ -68,8 +68,8 @@ function getChanged($path, $node)
 function genPlainFormat($tree, $path = "")
 {
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $path) {
-        $path = $path . "." . $key;
         $node = $tree[$key];
+        $path = $path . "." . $node['name'];
         $acc[] = getChanged($path, $node);
 
         if ($node['type'] == 'node') {
