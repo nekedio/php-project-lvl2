@@ -46,11 +46,11 @@ function getChanged($path, $node)
         return "";
     }
     
-    switch ($node['meta']) {
-        case 'addedNode':
+    switch ($node['type']) {
+        case 'addedLeaf':
             $event = "Property " . $path . " was added with value: " . $value2;
             break;
-        case 'removedNode':
+        case 'removedLeaf':
             $event = "Property " . $path . " was removed";
             break;
         case 'changedValue':
@@ -60,7 +60,7 @@ function getChanged($path, $node)
             $event = "";
             break;
         default:
-            throw new Exception("\"{$node['meta']}\" is invalid meta");
+            throw new Exception("\"{$node['type']}\" is invalid type");
     }
     return $event;
 }

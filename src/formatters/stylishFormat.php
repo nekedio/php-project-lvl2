@@ -58,14 +58,14 @@ function genLine($node, $key, $depth)
     $value2 = boolToString($node['value2']);
     $indent = genIndent($depth);
 
-    switch ($node['meta']) {
+    switch ($node['type']) {
         case 'notChangedValue':
             $result = $indent['standart'] . $node['name'] . ": " . $value2;
             break;
-        case 'addedNode':
+        case 'addedLeaf':
             $result = $indent['openAdd'] . $node['name'] . ": " . genLineValue($value2, $depth + 1);
             break;
-        case 'removedNode':
+        case 'removedLeaf':
             $result = $indent['openDel'] . $node['name'] . ": " . genLineValue($value1, $depth + 1);
             break;
         case 'changedValue':
@@ -74,7 +74,7 @@ function genLine($node, $key, $depth)
             $result = implode("\n", [$result1, $result2]);
             break;
         default:
-            throw new Exception("\"{$node['meta']}\" is invalid meta");
+            throw new Exception("\"{$node['type']}\" is invalid type");
     }
     return $result;
 }
@@ -91,7 +91,7 @@ function genStylishFormat($tree, $depth = 1)
     $indent = genIndent($depth);
     $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
         $node = $tree[$key];
-        if ($node['type'] == 'leaf') {
+        if ($node['type'] != 'node') {
             $acc[] = genLine($node, $key, $depth);
         } else {
             //print_r($node);

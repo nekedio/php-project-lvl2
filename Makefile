@@ -15,3 +15,5 @@ test:
 call:
 	php bin/gendiff --format stylish tests/fixtures/treeBefore.json tests/fixtures/treeAfter.json
 
+tree:
+	tree --prune -I vendor

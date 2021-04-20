@@ -10,14 +10,13 @@ use function GenerateDiff\formatters\plainFormat\genPlainFormat;
 use function GenerateDiff\formatters\stylishFormat\genStylishFormat;
 use function GenerateDiff\formatters\stylishFormat\genStylishFormat_new;
 
-function getLeaf($key, $value1, $value2, $meta)
+function getLeaf($key, $value1, $value2, $type)
 {
     return [
         'name' => $key,
         'value1' => $value1,
         'value2' => $value2,
-        'type' => 'leaf',
-        'meta' => $meta,
+        'type' => $type
     ];
 }
 
@@ -30,13 +29,13 @@ function getNode($key, $children)
     ];
 }
 
-function compareValue($data1, $data2, $key)
+function getTypeLeaf($data1, $data2, $key)
 {
     if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-        return 'addedNode';
+        return 'addedLeaf';
     }
     if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
-        return 'removedNode';
+        return 'removedLeaf';
     }
     if ($data1[$key] === $data2[$key]) {
         return 'notChangedValue';
@@ -44,8 +43,6 @@ function compareValue($data1, $data2, $key)
     if ($data1[$key] !== $data2[$key]) {
         return 'changedValue';
     }
-    throw new Exception("The node state is not described");
-    return;
 }
 
 function genDiff($objectData1, $objectData2)
@@ -58,14 +55,14 @@ function genDiff($objectData1, $objectData2)
 
         $value1 = $data1[$key] ?? null;
         $value2 = $data2[$key] ?? null;
-        $meta = compareValue($data1, $data2, $key);
 
         if (is_object($value1) && is_object($value2)) {
             $acc[] = getNode($key, genDiff($value1, $value2));
         } else {
-            $acc[] = getLeaf($key, $value1, $value2, $meta);
+            $typeLeaf = getTypeLeaf($data1, $data2, $key);
+            $acc[] = getLeaf($key, $value1, $value2, $typeLeaf);
         }
- 
+
         return $acc;
     }, []);
     return  $result;
@@ -82,7 +79,7 @@ function genOutput($pathToFile1, $pathToFile2, $outputFormat)
         pathinfo($pathToFile2, PATHINFO_EXTENSION)
     );
     $diff = genDiff($dataOfFile1, $dataOfFile2);
-    
+
     switch ($outputFormat) {
         case 'json':
             $output = genJsonFormat($diff);
