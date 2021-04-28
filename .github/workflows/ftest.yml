@@ -15,7 +15,7 @@ jobs:
       uses: shivammathur/setup-php@v2
 # Linter
       with:
-        php-version: '7.4'
+        php-version: '7.4.14'
     - name: Install package
       run: make install
     - name: Start linter
@@ -27,4 +27,5 @@ jobs:
         CC_TEST_REPORTER_ID: 1f7150adcf4f6670ecb168f5d79200376256ec3caa395d3851acda6ceff65226
       with:
         coverageCommand: make test-coverage
+        coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
         debug: true
