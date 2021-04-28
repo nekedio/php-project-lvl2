@@ -43,8 +43,6 @@ function genStylishFormat(array $tree, int $depth = 1): string
     $indents = genIndents($depth);
     $lines = array_map(function ($key) use ($tree, $depth, $indents) {
         $node = $tree[$key];
-        $value1 = toString($node['value1'], $depth + 1);
-        $value2 = toString($node['value2'], $depth + 1);
         switch ($node['type']) {
             case 'node':
                 $line = implode([
@@ -54,15 +52,20 @@ function genStylishFormat(array $tree, int $depth = 1): string
                 ]);
                 break;
             case 'notChangedValue':
+                $value2 = toString($node['value2'], $depth + 1);
                 $line = implode([$indents['notChanged'], $node['name'], ": ", $value2]);
                 break;
             case 'added':
+                $value2 = toString($node['value2'], $depth + 1);
                 $line = implode([$indents['added'], $node['name'], ": ", $value2]);
                 break;
             case 'removed':
+                $value1 = toString($node['value1'], $depth + 1);
                 $line = implode([$indents['removed'], $node['name'], ": ", $value1]);
                 break;
             case 'changedValue':
+                $value1 = toString($node['value1'], $depth + 1);
+                $value2 = toString($node['value2'], $depth + 1);
                 $line1 = implode([$indents['removed'], $node['name'] . ": " . $value1]);
                 $line2 = implode([$indents['added'], $node['name'] . ": " . $value2]);
                 $line = implode("\n", [$line1, $line2]);

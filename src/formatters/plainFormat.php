@@ -24,19 +24,19 @@ function genPlainFormat(array $tree, string $path = ""): string
     $lines = array_map(function ($key) use ($tree, $path) {
         $node = $tree[$key];
         $path = trim("{$path}.{$node['name']}", ".");
-        $value1 = toString($node['value1']);
-        $value2 = toString($node['value2']);
-
         switch ($node['type']) {
             case 'node':
                 return genPlainFormat($node['children'], $path);
             case 'added':
+                $value2 = toString($node['value2']);
                 $line = "Property '{$path}' was added with value: {$value2}";
                 break;
             case 'removed':
                 $line = "Property '{$path}' was removed";
                 break;
             case 'changedValue':
+                $value1 = toString($node['value1']);
+                $value2 = toString($node['value2']);
                 $line = "Property '{$path}' was updated. From {$value1} to {$value2}";
                 break;
             case 'notChangedValue':
