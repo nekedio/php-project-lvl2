@@ -22,7 +22,7 @@ class ComparisonTest extends TestCase
     public function additionProvider(): array
     {
         return [
-            ['diff.stylish', 'treeBefore.json', 'treeAfter.json', 'stylish'],
+            // ['diff.stylish', 'treeBefore.json', 'treeAfter.json', 'stylish'],
             ['diff.stylish', 'treeBefore.yml', 'treeAfter.yml', 'stylish'],
             ['diff.plain', 'treeBefore.yml', 'treeAfter.yml', 'plain'],
             // ['diff.json', 'treeBefore.json', 'treeAfter.json', 'json'],
