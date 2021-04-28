@@ -3,8 +3,12 @@ all: lint test call
 install:
 	composer install
 
-lint:
+lintOld:
 	composer run-script phpcs -- --standard=PSR12 src bin tests
+
+lint:
+	composer exec --verbose phpcs -- --standard=PSR12 src tests
+	composer exec --verbose phpstan -- --level=8 analyse src tests
 
 test-coverage:
 	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml

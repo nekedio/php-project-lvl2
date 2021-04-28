@@ -6,103 +6,72 @@ use Exception;
 
 use function Funct\Strings\times;
 
-function genIndent($depth)
+function genIndents(int $depth): array
 {
     return [
-        'standart' => times("    ", $depth),
-        'close' => times("    ", $depth - 1),
-        'openAdd' => times("    ", $depth - 1) . "  + ",
-        'openDel' => times("    ", $depth - 1) . "  - "
+        'notChanged' => times("    ", $depth),
+        'closingBracket' => times("    ", $depth - 1),
+        'added' => times("    ", $depth - 1) . "  + ",
+        'removed' => times("    ", $depth - 1) . "  - "
     ];
 }
 
-function boolToString($boolValue)
+/**
+ * Functiondescription
+ * @autor nekedio
+ * @param mixed $currentValue
+ **/
+function toString($currentValue, int $depth = 1): string
 {
-    if ($boolValue === true) {
-        return 'true';
+    $indents = genIndents($depth);
+    if (!is_object($currentValue)) {
+        return ($currentValue === null) ? 'null' : trim(var_export($currentValue, true), '\'');
     }
-    if ($boolValue === false) {
-        return 'false';
-    }
-    if ($boolValue === null) {
-        return 'null';
-    }
-    return $boolValue;
+    $value = get_object_vars($currentValue);
+    $lines = array_map(
+        fn($key, $val) => implode([$indents['notChanged'], $key, ": ", toString($val, $depth + 1)]),
+        array_keys($value),
+        $value
+    );
+
+    $result = ["{", ...$lines, "{$indents['closingBracket']}}"];
+    return implode("\n", $result);
 }
 
-function genLineValue($value, $depth)
+function genStylishFormat(array $tree, int $depth = 1): string
 {
-    if (is_object($value)) {
-        $node = get_object_vars($value);
-        $result = array_reduce(array_keys($node), function ($acc, $key) use ($node, $depth) {
-            if (is_object($node[$key])) {
-                $acc[] = times("    ", $depth) . $key . ": " . genLineValue($node[$key], $depth + 1);
-            } else {
-                $acc[] = times("    ", $depth) . $key . ": " . $node[$key];
-            }
-            return $acc;
-        }, []);
-
-        if (is_array($node)) {
-            $result = encloseInParentheses($result, $depth);
-        }
-
-        return implode("\n", $result);
-    }
-    return $value;
-}
-
-function genLine($node, $key, $depth)
-{
-    $value1 = boolToString($node['value1']);
-    $value2 = boolToString($node['value2']);
-    $indent = genIndent($depth);
-
-    switch ($node['type']) {
-        case 'notChangedValue':
-            $result = $indent['standart'] . $node['name'] . ": " . $value2;
-            break;
-        case 'addedLeaf':
-            $result = $indent['openAdd'] . $node['name'] . ": " . genLineValue($value2, $depth + 1);
-            break;
-        case 'removedLeaf':
-            $result = $indent['openDel'] . $node['name'] . ": " . genLineValue($value1, $depth + 1);
-            break;
-        case 'changedValue':
-            $result1 = $indent['openDel'] . $node['name'] . ": " . genLineValue($value1, $depth + 1);
-            $result2 = $indent['openAdd'] . $node['name'] . ": " . genLineValue($value2, $depth + 1);
-            $result = implode("\n", [$result1, $result2]);
-            break;
-        default:
-            throw new Exception("\"{$node['type']}\" is invalid type");
-    }
-    return $result;
-}
-
-function encloseInParentheses($node, $depth)
-{
-    array_unshift($node, "{");
-    $node[] = times("    ", $depth - 1) . "}";
-    return $node;
-}
-
-function genStylishFormat($tree, $depth = 1)
-{
-    $indent = genIndent($depth);
-    $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $indent, $depth) {
+    $indents = genIndents($depth);
+    $lines = array_map(function ($key) use ($tree, $depth, $indents) {
         $node = $tree[$key];
-        if ($node['type'] != 'node') {
-            $acc[] = genLine($node, $key, $depth);
-        } else {
-            //print_r($node);
-            $acc[] = $indent['standart'] . $node['name'] . ": " . genStylishFormat($node['children'], $depth + 1);
+        $value1 = toString($node['value1'], $depth + 1);
+        $value2 = toString($node['value2'], $depth + 1);
+        switch ($node['type']) {
+            case 'node':
+                $line = implode([
+                    $indents['notChanged'],
+                    $node['name'], ": ",
+                    genStylishFormat($node['children'], $depth + 1)
+                ]);
+                break;
+            case 'notChangedValue':
+                $line = implode([$indents['notChanged'], $node['name'], ": ", $value2]);
+                break;
+            case 'added':
+                $line = implode([$indents['added'], $node['name'], ": ", $value2]);
+                break;
+            case 'removed':
+                $line = implode([$indents['removed'], $node['name'], ": ", $value1]);
+                break;
+            case 'changedValue':
+                $line1 = implode([$indents['removed'], $node['name'] . ": " . $value1]);
+                $line2 = implode([$indents['added'], $node['name'] . ": " . $value2]);
+                $line = implode("\n", [$line1, $line2]);
+                break;
+            default:
+                throw new Exception("\"{$tree['type']}\" is invalid type");
         }
-        return $acc;
-    }, []);
-
-    if (is_array($tree)) {
-        $result = encloseInParentheses($result, $depth);
-    }
-
+        return $line;
+    }, array_keys($tree));
+    $result = ["{", ...$lines, "{$indents['closingBracket']}}"];
     return implode("\n", $result);
 }

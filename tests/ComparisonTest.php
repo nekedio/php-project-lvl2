@@ -12,21 +12,20 @@ class ComparisonTest extends TestCase
     * @dataProvider additionProvider
     */
 
-    public function testGenOutput($expected, $before, $after, $format)
+    public function testGenOutput(string $expected, string $before, string $after, string $format): void
     {
         $path = 'tests/fixtures/';
-        $diff = rtrim(file_get_contents($path . $expected));
-        
+        $diff = rtrim((string) file_get_contents($path . $expected));
         $this->assertEquals($diff, genOutput($path . $before, $path . $after, $format));
     }
 
-    public function additionProvider()
+    public function additionProvider(): array
     {
         return [
             ['diff.stylish', 'treeBefore.json', 'treeAfter.json', 'stylish'],
             ['diff.stylish', 'treeBefore.yml', 'treeAfter.yml', 'stylish'],
             ['diff.plain', 'treeBefore.yml', 'treeAfter.yml', 'plain'],
-            //['diff.json', 'treeBefore.json', 'treeAfter.json', 'json'],
+            // ['diff.json', 'treeBefore.json', 'treeAfter.json', 'json'],
         ];
     }
 }

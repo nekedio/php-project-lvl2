@@ -8,77 +8,57 @@ use function GenerateDiff\parser\parse;
 use function GenerateDiff\formatters\jsonFormat\genJsonFormat;
 use function GenerateDiff\formatters\plainFormat\genPlainFormat;
 use function GenerateDiff\formatters\stylishFormat\genStylishFormat;
-use function GenerateDiff\formatters\stylishFormat\genStylishFormat_new;
 
-function getLeaf($key, $value1, $value2, $type)
-{
-    return [
-        'name' => $key,
-        'value1' => $value1,
-        'value2' => $value2,
-        'type' => $type
-    ];
-}
-
-function getNode($key, $children)
-{
-    return [
-        'name' => $key,
-        'type' => 'node',
-        'children' => $children,
-    ];
-}
-
-function getTypeLeaf($data1, $data2, $key)
-{
-    if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-        return 'addedLeaf';
-    }
-    if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
-        return 'removedLeaf';
-    }
-    if ($data1[$key] === $data2[$key]) {
-        return 'notChangedValue';
-    }
-    if ($data1[$key] !== $data2[$key]) {
-        return 'changedValue';
-    }
-}
-
-function genDiff($objectData1, $objectData2)
+function genDiff(object $objectData1, object $objectData2): array
 {
     $data1 = get_object_vars($objectData1);
     $data2 = get_object_vars($objectData2);
     $nodeMerge = array_merge($data1, $data2);
     ksort($nodeMerge);
     $result = array_reduce(array_keys($nodeMerge), function ($acc, $key) use ($data1, $data2) {
-
         $value1 = $data1[$key] ?? null;
         $value2 = $data2[$key] ?? null;
 
         if (is_object($value1) && is_object($value2)) {
-            $acc[] = getNode($key, genDiff($value1, $value2));
-        } else {
-            $typeLeaf = getTypeLeaf($data1, $data2, $key);
-            $acc[] = getLeaf($key, $value1, $value2, $typeLeaf);
+            $acc[] = ['name' => $key, 'type' => 'node', 'children' => gendiff($value1, $value2)];
+            return $acc;
         }
-
-        return $acc;
+        if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
+            $acc[] = ['name' => $key, 'value1' => $value1, 'value2' => $value2, 'type' => 'added'];
+            return $acc;
+        }
+        if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
+            $acc[] = ['name' => $key, 'value1' => $value1, 'value2' => $value2, 'type' => 'removed'];
+            return $acc;
+        }
+        if ($data1[$key] === $data2[$key]) {
+            $acc[] = ['name' => $key, 'value1' => $value1, 'value2' => $value2, 'type' => 'notChangedValue'];
+            return $acc;
+        }
+        if ($data1[$key] !== $data2[$key]) {
+            $acc[] = ['name' => $key, 'value1' => $value1, 'value2' => $value2, 'type' => 'changedValue'];
+            return $acc;
+        }
     }, []);
     return  $result;
 }
 
-function genOutput($pathToFile1, $pathToFile2, $outputFormat)
+function genOutput(string $pathToFile1, string $pathToFile2, string $outputFormat): string
 {
+    $content1 = (string) file_get_contents($pathToFile1);
+
     $dataOfFile1 = parse(
-        file_get_contents($pathToFile1),
-        pathinfo($pathToFile1, PATHINFO_EXTENSION)
+        pathinfo($pathToFile1, PATHINFO_EXTENSION),
+        (string) file_get_contents($pathToFile1)
     );
+
     $dataOfFile2 = parse(
-        file_get_contents($pathToFile2),
-        pathinfo($pathToFile2, PATHINFO_EXTENSION)
+        pathinfo($pathToFile2, PATHINFO_EXTENSION),
+        (string) file_get_contents($pathToFile2)
     );
     $diff = genDiff($dataOfFile1, $dataOfFile2);
+
+    // print_r($diff);
 
     switch ($outputFormat) {
         case 'json':

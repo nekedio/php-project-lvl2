@@ -5,7 +5,7 @@ namespace GenerateDiff\parser;
 use Symfony\Component\Yaml\Yaml;
 use Exception;
 
-function parse(string $content, string $extension)
+function parse(string $extension, string $content): object
 {
     switch ($extension) {
         case 'json':

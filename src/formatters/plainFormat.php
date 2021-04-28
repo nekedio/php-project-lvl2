@@ -6,76 +6,47 @@ use Exception;
 
 use function Funct\Strings\times;
 
-function boolToString($boolValue)
-{
-    if ($boolValue === true) {
-        return 'true';
-    }
-    if ($boolValue === false) {
-        return 'false';
-    }
-    if ($boolValue === null) {
-        return 'null';
-    }
-    $result = "'" . $boolValue . "'";
-    return $result;
-}
-
-function getValue($value)
+/**
+ * Functiondescription
+ * @autor nekedio
+ * @param mixed $value
+ **/
+function toString($value): string
 {
     if (is_object($value)) {
         return '[complex value]';
     }
-    return boolToString($value);
+    return ($value === null) ? 'null' : var_export($value, true);
 }
 
-function delVoidLine($events)
+function genPlainFormat(array $tree, string $path = ""): string
 {
-    return array_filter($events, function ($event) {
-        return ($event != null);
-    });
-}
-
-function getChanged($path, $node)
-{
-    $path = "'" . trim($path, ".") . "'";
-    $value1 = getValue($node['value1']);
-    $value2 = getValue($node['value2']);
-
-    if ($node['type'] == 'node') {
-        return "";
-    }
-    
-    switch ($node['type']) {
-        case 'addedLeaf':
-            $event = "Property " . $path . " was added with value: " . $value2;
-            break;
-        case 'removedLeaf':
-            $event = "Property " . $path . " was removed";
-            break;
-        case 'changedValue':
-            $event = "Property " . $path . " was updated. From " . $value1 . " to " . $value2;
-            break;
-        case 'notChangedValue':
-            $event = "";
-            break;
-        default:
-            throw new Exception("\"{$node['type']}\" is invalid type");
-    }
-    return $event;
-}
-
-function genPlainFormat($tree, $path = "")
-{
-    $result = array_reduce(array_keys($tree), function ($acc, $key) use ($tree, $path) {
+    $lines = array_map(function ($key) use ($tree, $path) {
         $node = $tree[$key];
-        $path = $path . "." . $node['name'];
-        $acc[] = getChanged($path, $node);
+        $path = trim("{$path}.{$node['name']}", ".");
+        $value1 = toString($node['value1']);
+        $value2 = toString($node['value2']);
 
-        if ($node['type'] == 'node') {
-            $acc[] = genPlainFormat($node['children'], $path);
+        switch ($node['type']) {
+            case 'node':
+                return genPlainFormat($node['children'], $path);
+            case 'added':
+                $line = "Property '{$path}' was added with value: {$value2}";
+                break;
+            case 'removed':
+                $line = "Property '{$path}' was removed";
+                break;
+            case 'changedValue':
+                $line = "Property '{$path}' was updated. From {$value1} to {$value2}";
+                break;
+            case 'notChangedValue':
+                $line = "";
+                break;
+            default:
+                throw new Exception("\"{$node['type']}\" is invalid type");
         }
-        return $acc;
-    }, []);
-    return implode("\n", delVoidLine($result));
+        return $line;
+    }, array_keys($tree));
+    $result = array_filter($lines, fn($line) => $line != null);
+    return implode("\n", $result);
 }

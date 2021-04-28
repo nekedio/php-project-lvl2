@@ -14,8 +14,6 @@
         ]
     },
     "scripts": {
-            "phpcs": "phpcs",
-            "phpunit": "phpunit",
             "test": "phpunit tests"
         },
     "authors": [
@@ -30,7 +28,9 @@
         "symfony/yaml": "^5.1"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5",
+        "phpstan/phpstan-phpunit": "^0.12.16",
+        "phpstan/extension-installer": "^1.0",
+        "squizlabs/php_codesniffer": "^3.5.5",
         "phpunit/phpunit": "^9.1"
     }
 }

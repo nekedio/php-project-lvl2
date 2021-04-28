@@ -2,7 +2,7 @@
 
 namespace GenerateDiff\formatters\jsonFormat;
 
-function genJsonFormat($tree)
+function genJsonFormat(array $tree): string
 {
-    return json_encode($tree);
+    return (string) json_encode($tree);
 }
